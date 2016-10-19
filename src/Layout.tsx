@@ -1,14 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
+import {PageHeader} from "react-bootstrap";
 
-import {TaskDefinitionsWithQuery} from "./GraphQLComponents";
-import MyComponentWithData from "./Counter";
+import {TaskDefinitionsWithQuery, RunningTasksWithQuery} from "./GraphQLComponents";
 
-export default function Layout() {
-  return (
-    <div>
-      <h1>Hello, worlds!</h1>
-        <MyComponentWithData/>
-        <TaskDefinitionsWithQuery/>
-    </div>
-  )
+export function Layout() {
+    let divStyle = {
+        margin: "20px"
+    };
+
+    return (
+        <div style={divStyle}>
+            <PageHeader>Mouse Light Acquisition Dashboard
+                <small> Pipeline Worker</small>
+            </PageHeader>
+            <TaskDefinitionsWithQuery/>
+            <RunningTasksWithQuery/>
+        </div>
+    )
 }

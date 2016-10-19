@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
+    "dev": "DEBUG=mouselight* node $NODE_DEBUG_OPTION server.js",
     "start": "node server.js",
     "lint": "eslint src"
   },
@@ -11,10 +12,14 @@
   "license": "Janelia",
   "devDependencies": {
     "@types/chai": "^3.4.34",
+    "@types/express-serve-static-core": "^4.0.37",
     "@types/isomorphic-fetch": "0.0.31",
     "@types/react": "^0.14.41",
     "@types/react-bootstrap": "0.0.33",
     "@types/react-dom": "^0.14.17",
+    "@types/serve-static": "^1.7.31",
+    "@types/webpack": "^1.12.35",
+    "@types/webpack-dev-server": "^1.12.1",
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.3",
     "babel-loader": "^6.0.1",

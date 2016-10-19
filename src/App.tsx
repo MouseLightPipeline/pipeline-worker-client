@@ -1,10 +1,10 @@
-import * as React from 'react';
-import {ApolloProvider} from 'react-apollo';
-import ApolloClient from 'apollo-client';
-import {createNetworkInterface, addTypename} from 'apollo-client';
-// import {Client} from 'subscriptions-transport-ws';
+import * as React from "react";
+import {ApolloProvider} from "react-apollo";
+import ApolloClient from "apollo-client";
+import {createNetworkInterface, addTypename} from "apollo-client";
+// import {Client} from "subscriptions-transport-ws";
 
-import Layout from './Layout';
+import {Layout} from "./Layout";
 
 // If you use React Router, make this component render <Router> with your routes. Currently, only synchronous routes are
 // hot reloaded, and you will see a warning from <Router> on every reload.  You can ignore this warning. For details,
@@ -13,10 +13,10 @@ import Layout from './Layout';
 declare var window: { __APOLLO_STATE__: any };
 
 const networkInterface = createNetworkInterface({
-    uri: '/graphql'
+    uri: "/graphql"
 });
 
-// const wsClient = new Client('ws://localhost:8080');
+// const wsClient = new Client("ws://localhost:8080");
 
 // const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
 //    networkInterface,

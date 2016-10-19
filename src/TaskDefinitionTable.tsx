@@ -13,7 +13,6 @@ class TaskDefinitionRow extends React.Component<ITaskDefinitionRowProps, any> {
 
         return (
             <tr key={"tr_" + taskDefinition.id}>
-                <td>{taskDefinition.id}</td>
                 <td>{taskDefinition.name}</td>
                 <td>{taskDefinition.script}</td>
                 <td>{taskDefinition.interpreter}</td>
@@ -35,7 +34,6 @@ export class TaskDefinitionsTable extends React.Component<ITaskDefinitionsTable,
             <Table striped condensed>
                 <thead>
                     <tr>
-                        <td>ID</td>
                         <td>Name</td>
                         <td>Script</td>
                         <td>Interpreter</td>
