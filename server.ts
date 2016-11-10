@@ -6,7 +6,7 @@ const config = require("./webpack.config");
 new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
     hot: true,
-    proxy: {"/graphql": `http://localhost:3000`},
+    proxy: {"/graphql": `http://localhost:3001`},
     historyApiFallback: true,
     noInfo: false,
     quiet: false
@@ -15,5 +15,5 @@ new WebpackDevServer(webpack(config), {
         return console.log(err);
     }
 
-    console.log("Listening at http://localhost:4000/");
+    console.log("Listening at http://localhost:4001/");
 });
