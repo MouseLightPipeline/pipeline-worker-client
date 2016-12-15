@@ -5,7 +5,7 @@ module.exports = {
     devtool: "sourcemap",
     entry: [
         "react-hot-loader/patch",
-        "webpack-dev-server/client?http://localhost:4000",
+        "webpack-dev-server/client?http://localhost:4001",
         "webpack/hot/only-dev-server",
         "./src/index"
     ],

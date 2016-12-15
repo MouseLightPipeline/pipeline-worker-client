@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PageHeader} from "react-bootstrap";
 
-import {TaskDefinitionsWithQuery, RunningTasksWithQuery} from "./GraphQLComponents";
+import {TaskDefinitionsWithQuery, RunningTasksWithQuery, ExecutedTasksWithQuery} from "./GraphQLComponents";
 
 export function Layout() {
     let divStyle = {
@@ -15,6 +15,7 @@ export function Layout() {
             </PageHeader>
             <TaskDefinitionsWithQuery/>
             <RunningTasksWithQuery/>
+            <ExecutedTasksWithQuery/>
         </div>
     )
 }

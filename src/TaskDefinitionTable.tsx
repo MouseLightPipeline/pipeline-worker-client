@@ -12,7 +12,7 @@ class TaskDefinitionRow extends React.Component<ITaskDefinitionRowProps, any> {
         let taskDefinition = this.props.taskDefinition;
 
         return (
-            <tr key={"tr_" + taskDefinition.id}>
+            <tr>
                 <td>{taskDefinition.name}</td>
                 <td>{taskDefinition.script}</td>
                 <td>{taskDefinition.interpreter}</td>
@@ -27,7 +27,7 @@ interface ITaskDefinitionsTable {
 
 export class TaskDefinitionsTable extends React.Component<ITaskDefinitionsTable, any> {
     render() {
-        let rows = this.props.taskDefinitions.map(taskDefinition => (<TaskDefinitionRow
+        let rows = this.props.taskDefinitions.map(taskDefinition => (<TaskDefinitionRow  key={"tr_" + taskDefinition.id}
             taskDefinition={taskDefinition}/>));
 
         return (

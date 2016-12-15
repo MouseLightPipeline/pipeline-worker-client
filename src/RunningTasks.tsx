@@ -24,7 +24,7 @@ class TablePanel extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <Panel collapsible defaultExpanded header="Running Tasks">
+                <Panel collapsible defaultExpanded header="Running Tasks" bsStyle="primary">
                     {this.props.runningTasks.length === 0 ? <NoRunngTasks/> :
                         <RunningTasksTable runningTasks={this.props.runningTasks}/> }
                 </Panel>
