@@ -1,7 +1,10 @@
 import * as React from "react";
 import {PageHeader} from "react-bootstrap";
 
-import {TaskDefinitionsWithQuery, RunningTasksWithQuery, ExecutedTasksWithQuery} from "./GraphQLComponents";
+import {
+    TaskDefinitionsWithQuery, RunningTasksWithQuery, ExecutedTasksWithQuery,
+    TaskStatisticsWithQuery
+} from "./GraphQLComponents";
 
 export function Layout() {
     let divStyle = {
@@ -13,8 +16,9 @@ export function Layout() {
             <PageHeader>Mouse Light Acquisition Dashboard
                 <small> Pipeline Worker</small>
             </PageHeader>
-            <TaskDefinitionsWithQuery/>
             <RunningTasksWithQuery/>
+            <TaskDefinitionsWithQuery/>
+            <TaskStatisticsWithQuery/>
             <ExecutedTasksWithQuery/>
         </div>
     )

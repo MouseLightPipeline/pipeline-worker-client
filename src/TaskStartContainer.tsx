@@ -11,7 +11,8 @@ import {
     FormGroup,
     ControlLabel,
     FormControl,
-    Glyphicon
+    Glyphicon,
+    HelpBlock
 } from "react-bootstrap";
 
 
@@ -21,6 +22,10 @@ class StartTaskMenu extends React.Component<any, any> {
     };
 
     render() {
+        let divStyle = {
+            width: "100%",
+        };
+
         let title = "";
 
         let rows = this.props.taskDefinitions.map(taskDefinition => {
@@ -28,12 +33,12 @@ class StartTaskMenu extends React.Component<any, any> {
                 title = taskDefinition.name;
             }
 
-            return (<MenuItem key={taskDefinition.id} eventKey={taskDefinition.id}>{taskDefinition.name}</MenuItem>)
+            return (<MenuItem style={divStyle} key={taskDefinition.id} eventKey={taskDefinition.id}>{taskDefinition.name}</MenuItem>)
         });
 
         return (
-            <div>
-                <DropdownButton id="task-definition-dropdown" title={title} onSelect={this.handleChange}>
+            <div style={divStyle}>
+                <DropdownButton style={divStyle} id="task-definition-dropdown" bsSize="sm" title={title} onSelect={this.handleChange}>
                     {rows}
                 </DropdownButton>
             </div>
@@ -47,7 +52,7 @@ class StartTaskButton extends React.Component<any, any> {
     };
 
     render() {
-        return (<Button bsStyle="success" bsSize="sm" onClick={this.onClick}><Glyphicon glyph="play" /> Start</Button>)
+        return (<Button bsStyle="success" bsSize="sm" onClick={this.onClick}><Glyphicon glyph="play"/> Start</Button>)
     }
 }
 
@@ -57,7 +62,7 @@ interface IStartTaskComponentState {
     scriptArgs?: string[];
 }
 
-export class StartTaskComponent extends React.Component<any, IStartTaskComponentState> {
+export class TaskStartComponent extends React.Component<any, IStartTaskComponentState> {
     constructor(props) {
         super(props);
         this.onTaskSelectionChange = this.onTaskSelectionChange.bind(this);
@@ -80,31 +85,40 @@ export class StartTaskComponent extends React.Component<any, IStartTaskComponent
             this.state.selectedTaskDefinitionId = this.props.taskDefinitions[0].id;
         }
 
+        let divStyle = {
+            width: "100%",
+        };
+
         return (
             <Panel collapsible defaultExpanded header="Start New Task" bsStyle="info">
                 <Grid fluid>
                     <Row>
-                        <Col lg={2}>
+                        <Col lg={1}>
                             <FormGroup>
+                                <ControlLabel>&nbsp;</ControlLabel><br/>
+                                <StartTaskButton
+                                    selectedTaskDefinitionId={this.state.selectedTaskDefinitionId}
+                                    scriptArgs={this.state.scriptArgs} startTask={this.props.startTask}/>
+                            </FormGroup>
+                        </Col>
+                        <Col lg={2} >
+                            <FormGroup style={divStyle}>
                                 <ControlLabel>Task</ControlLabel>
                                 <StartTaskMenu onTaskSelectionChange={this.onTaskSelectionChange}
                                                taskDefinitions={this.props.taskDefinitions}
                                                selectedTaskId={this.state.selectedTaskDefinitionId}/>
                             </FormGroup>
                         </Col>
-                        <Col lg={10}>
+                        <Col lg={9}>
                             <FormGroup>
                                 <ControlLabel>Arguments</ControlLabel>
                                 <FormControl type="text" onChange={this.onTaskArgumentsChange}
                                              value={this.state.scriptArgString}/>
+                                <HelpBlock>
+                                    Tasks assume the following initial arguments: pipeline name, pipeline root path, previous stage root path, current stage root path, tile relative path, tile id, channel.<br/>
+                                    Tasks may require additional task-specific arguments.
+                                </HelpBlock>
                             </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col lg={12}>
-                            <StartTaskButton
-                                selectedTaskDefinitionId={this.state.selectedTaskDefinitionId}
-                                scriptArgs={this.state.scriptArgs} startTask={this.props.startTask}/>
                         </Col>
                     </Row>
                 </Grid>

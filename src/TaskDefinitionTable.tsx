@@ -15,7 +15,8 @@ class TaskDefinitionRow extends React.Component<ITaskDefinitionRowProps, any> {
             <tr>
                 <td>{taskDefinition.name}</td>
                 <td>{taskDefinition.script}</td>
-                <td>{taskDefinition.interpreter}</td>
+                <td>{taskDefinition.interpreter === "none" ? "shell" : taskDefinition.interpreter}</td>
+                <td>{taskDefinition.work_units.toFixed(1)}</td>
                 <td>{taskDefinition.description}</td>
             </tr>);
     }
@@ -37,6 +38,7 @@ export class TaskDefinitionsTable extends React.Component<ITaskDefinitionsTable,
                         <td>Name</td>
                         <td>Script</td>
                         <td>Interpreter</td>
+                        <td>Work Units</td>
                         <td>Description</td>
                     </tr>
                 </thead>
