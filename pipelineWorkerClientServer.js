@@ -15,4 +15,4 @@ new WebpackDevServer(webpack(config), {
     }
     console.log("Listening at http://localhost:4001/");
 });
-//# sourceMappingURL=server.js.map
+//# sourceMappingURL=pipelineWorkerClientServer.js.map
