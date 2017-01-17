@@ -19,7 +19,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
         let elapsed = moment().diff(moment(new Date(parseInt(runningTask.started_at))));
 
-        let elapsedText = elapsed < 120000 ? moment.duration(elapsed).asSeconds() : moment.duration(elapsed).asMinutes();
+        let elapsedText = elapsed < 120000 ? `${moment.duration(elapsed).asSeconds().toFixed(0)} seconds` : `${moment.duration(elapsed).asMinutes().toFixed(1)} minutes`;
 
         return (
             <tr>

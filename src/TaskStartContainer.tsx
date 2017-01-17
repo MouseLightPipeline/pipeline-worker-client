@@ -115,7 +115,7 @@ export class TaskStartComponent extends React.Component<any, IStartTaskComponent
                                 <FormControl type="text" onChange={this.onTaskArgumentsChange}
                                              value={this.state.scriptArgString}/>
                                 <HelpBlock>
-                                    Tasks assume the following initial arguments: pipeline name, pipeline root path, previous stage root path, current stage root path, tile relative path, tile id, channel.<br/>
+                                    Tasks assume the following initial arguments: pipeline name, pipeline root path, previous stage root path, current stage root path, tile relative path, tile id.<br/>
                                     Tasks may require additional task-specific arguments.
                                 </HelpBlock>
                             </FormGroup>
