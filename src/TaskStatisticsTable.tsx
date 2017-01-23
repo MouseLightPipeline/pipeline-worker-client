@@ -9,6 +9,14 @@ interface ITaskStatisticsRowProps {
     definitions :ITaskDefinition[]
 }
 
+function formatValue(val, truncate = 2) {
+    if (!val) {
+        return "n/a";
+    }
+
+    return val.toFixed(truncate);
+}
+
 class TaskStatisticsRow extends React.Component<ITaskStatisticsRowProps, any> {
     render() {
         let statistic = this.props.statistic;
@@ -17,9 +25,9 @@ class TaskStatisticsRow extends React.Component<ITaskStatisticsRowProps, any> {
             <tr>
                 <td>{statistic.task_id}</td>
                 <td>{`${statistic.num_execute} | ${statistic.num_complete} | ${statistic.num_error} | ${statistic.num_cancel}`}</td>
-                <td>{`${(statistic.cpu_high).toFixed(2)} | ${(statistic.cpu_low).toFixed(2)} | ${(statistic.cpu_average).toFixed(2)}`}</td>
-                <td>{`${(statistic.memory_high).toFixed(2)} | ${(statistic.memory_low).toFixed(2)} | ${(statistic.memory_average).toFixed(2)}`}</td>
-                <td>{`${(statistic.duration_high * 3600).toFixed(2)} | ${(statistic.duration_low * 3600).toFixed(2)} | ${(statistic.duration_average * 3600).toFixed(2)}`}</td>
+                <td>{`${formatValue(statistic.cpu_high)} | ${formatValue(statistic.cpu_low)} | ${formatValue(statistic.cpu_average)}`}</td>
+                <td>{`${formatValue(statistic.memory_high)} | ${formatValue(statistic.memory_low)} | ${formatValue(statistic.memory_average)}`}</td>
+                <td>{`${formatValue(statistic.duration_high * 3600)} | ${formatValue(statistic.duration_low * 3600)} | ${formatValue(statistic.duration_average * 3600)}`}</td>
             </tr>);
     }
 }
