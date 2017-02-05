@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "dev": "DEBUG=mouselight* node $NODE_DEBUG_OPTION pipelineWorkerClientServer.js",
-    "start": "node pipelineWorkerClientServer.js",
+    "dev": "DEBUG=mouselight* node $NODE_DEBUG_OPTION src/pipelineWorkerClientServer.js",
+    "start": "node src/pipelineWorkerClientServer.js",
     "lint": "eslint src"
   },
   "keywords": [],
@@ -30,7 +30,6 @@
     "classnames": "^2.2.5",
     "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.6.2",
-    "react-hot-loader": "^3.0.0-beta.1",
     "ts-loader": "^0.9.1",
     "typed-graphql": "^1.0.2",
     "typescript": "^2.0.3",

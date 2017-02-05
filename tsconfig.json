@@ -7,9 +7,8 @@
     "sourceMap": true
   },
   "include": [
-    "declaration.d.ts",
     "src/**/*",
-    "pipelineWorkerClientServer.ts"
+    "src/pipelineWorkerClientServer.ts"
   ],
   "exclude": [
     "node_modules"

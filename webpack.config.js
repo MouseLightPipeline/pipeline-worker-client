@@ -1,18 +1,18 @@
-var path = require("path");
-var webpack = require("webpack");
+const path = require("path");
+const webpack = require("webpack");
+
+const config = require("./system.config").default();
 
 module.exports = {
     devtool: "sourcemap",
     entry: [
-        "react-hot-loader/patch",
-        "webpack-dev-server/client?http://localhost:4001",
-        "webpack/hot/only-dev-server",
+        `webpack-dev-server/client?http://localhost:${config.port}`,
         "./src/index"
     ],
     devServer: {
         proxy: {
             "/graphql": {
-                target: 'http://localhost:3001'
+                target: `http://localhost:${config.apiPort}`
             }
         }
     },
@@ -34,8 +34,8 @@ module.exports = {
                 loaders: ["babel"],
                 include: path.join(__dirname, "src")
             }, {
-                test: /\.tsx?$/, loader: "ts-loader"
+                test: /\.tsx?$/, loader: "babel-loader?presets[]=es2015!ts-loader"
             }
-        ]
+        ],
     }
 };
