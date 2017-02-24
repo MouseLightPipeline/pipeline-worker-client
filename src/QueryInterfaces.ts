@@ -42,6 +42,7 @@ export interface IRunningTask {
     id: string;
     work_units: number;
     resolved_script: string;
+    resolved_args: string;
     max_cpu: number;
     max_memory: number;
     started_at: string;

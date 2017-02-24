@@ -18,7 +18,8 @@ class ClearCompletedButton extends React.Component<any, any> {
     };
 
     render() {
-        return (<Button bsStyle="warning" bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/> Clear Complete</Button>)
+        return (<Button bsStyle="warning" bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>
+            Clear Complete</Button>)
     }
 }
 
@@ -43,9 +44,18 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
 
         let exitCodeText = (executedTask.completed_at !== null) ? executedTask.exit_code : "N/A";
 
+        const parts = executedTask.resolved_args.split(",");
+
+        let relativeTile = "(can't parse)";
+
+        if (parts.length > 4) {
+            relativeTile = parts[4];
+        }
+
         return (
             <tr>
                 <td>{taskDefinition ? taskDefinition.name : executedTask.resolved_script}</td>
+                <td>{relativeTile}</td>
                 <td>{ExecutionStatusCode[executedTask.execution_status_code]}</td>
                 <td>{ExecutionStatus[executedTask.last_process_status_code]}</td>
                 <td>{`${CompletionStatusCode[executedTask.completion_status_code]} (${exitCodeText})`}</td>
@@ -78,6 +88,7 @@ export class ExecutedTasksTable extends React.Component<IExecutedTasksTable, any
                     <thead>
                     <tr>
                         <td>Script</td>
+                        <td>Tile</td>
                         <td>Status</td>
                         <td>PM Status</td>
                         <td>Exit Result (Code)</td>

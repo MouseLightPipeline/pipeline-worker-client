@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as React from "react";
 import {Table, Button, Glyphicon} from "react-bootstrap"
 import moment = require("moment");
@@ -15,18 +16,27 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
     };
 
     render() {
-        let runningTask = this.props.runningTask;
+        const runningTask = this.props.runningTask;
 
-        let elapsed = moment().diff(moment(new Date(parseInt(runningTask.started_at))));
+        const elapsed = moment().diff(moment(new Date(parseInt(runningTask.started_at))));
 
-        let elapsedText = elapsed < 120000 ? `${moment.duration(elapsed).asSeconds().toFixed(0)} seconds` : `${moment.duration(elapsed).asMinutes().toFixed(1)} minutes`;
+        const elapsedText = elapsed < 120000 ? `${moment.duration(elapsed).asSeconds().toFixed(0)} seconds` : `${moment.duration(elapsed).asMinutes().toFixed(1)} minutes`;
+
+        const parts = runningTask.resolved_args.split(",");
+
+        let relativeTile = "(can't parse)";
+
+        if (parts.length > 4) {
+            relativeTile = parts[4];
+        }
 
         return (
             <tr>
                 <td><Button bsSize="xs" bsStyle="danger" onClick={this.onCancelClick}><Glyphicon glyph="stop"/> Cancel</Button></td>
                 <td>{new Date(parseInt(runningTask.started_at)).toLocaleString()}</td>
                 <td>{elapsedText}</td>
-                <td>{runningTask.resolved_script}</td>
+                <td>{path.basename(runningTask.resolved_script)}</td>
+                <td>{relativeTile} </td>
                 <td>{runningTask.work_units} </td>
                 <td>{runningTask.max_cpu ? runningTask.max_cpu.toFixed(2) : "N/A"} %</td>
                 <td>{runningTask.max_memory ? runningTask.max_memory.toFixed(2) : "N/A"}</td>
@@ -51,6 +61,7 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
                     <td>Started</td>
                     <td>Elapsed</td>
                     <td>Script</td>
+                    <td>args</td>
                     <td>Work Units</td>
                     <td>Max CPU</td>
                     <td>Max Memory (MB)</td>
