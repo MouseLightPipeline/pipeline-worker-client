@@ -61,7 +61,7 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
                     <td>Started</td>
                     <td>Elapsed</td>
                     <td>Script</td>
-                    <td>args</td>
+                    <td>Tile</td>
                     <td>Work Units</td>
                     <td>Max CPU</td>
                     <td>Max Memory (MB)</td>
