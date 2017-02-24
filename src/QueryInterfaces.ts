@@ -41,7 +41,8 @@ export interface ITaskDefinition {
 export interface IRunningTask {
     id: string;
     work_units: number;
-    resolved_script: string;
+    task_id: string;
+    task: ITaskDefinition;
     resolved_args: string;
     max_cpu: number;
     max_memory: number;

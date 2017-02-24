@@ -4,6 +4,7 @@ import {Table, Button, Glyphicon} from "react-bootstrap"
 import moment = require("moment");
 
 import {IRunningTask} from "./QueryInterfaces";
+import {formatMemoryFromMB, formatCpuUsage, formatDurationFromHours} from "./util/formatters";
 
 interface IIRunningTaskRowProps {
     runningTask: IRunningTask;
@@ -20,7 +21,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
         const elapsed = moment().diff(moment(new Date(parseInt(runningTask.started_at))));
 
-        const elapsedText = elapsed < 120000 ? `${moment.duration(elapsed).asSeconds().toFixed(0)} seconds` : `${moment.duration(elapsed).asMinutes().toFixed(1)} minutes`;
+        const elapsedText = formatDurationFromHours(moment.duration(elapsed).asMilliseconds() / 1000 / 3600);
 
         const parts = runningTask.resolved_args.split(",");
 
@@ -30,16 +31,18 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
             relativeTile = parts[4];
         }
 
+        const taskName = runningTask && runningTask.task ? runningTask.task.name : "(unknown)";
+
         return (
             <tr>
                 <td><Button bsSize="xs" bsStyle="danger" onClick={this.onCancelClick}><Glyphicon glyph="stop"/> Cancel</Button></td>
                 <td>{new Date(parseInt(runningTask.started_at)).toLocaleString()}</td>
                 <td>{elapsedText}</td>
-                <td>{path.basename(runningTask.resolved_script)}</td>
+                <td>{taskName}</td>
                 <td>{relativeTile} </td>
                 <td>{runningTask.work_units} </td>
-                <td>{runningTask.max_cpu ? `${runningTask.max_cpu.toFixed(2)} %` : "N/A"}</td>
-                <td>{runningTask.max_memory ? runningTask.max_memory.toFixed(2) : "N/A"}</td>
+                <td>{formatCpuUsage(runningTask.max_cpu)}</td>
+                <td>{formatMemoryFromMB(runningTask.max_memory)}</td>
             </tr>);
     }
 }
@@ -64,7 +67,7 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
                     <th>Tile</th>
                     <th>Work Units</th>
                     <th>Max CPU</th>
-                    <th>Max Memory (MB)</th>
+                    <th>Max Memory</th>
                 </tr>
                 </thead>
                 <tbody>
