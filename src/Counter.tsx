@@ -4,7 +4,7 @@ import {Component} from "react";
 export default class Counter extends Component<any, any> {
     interval: any;
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {counter: 0};
     }

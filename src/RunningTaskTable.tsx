@@ -7,7 +7,7 @@ import {IRunningTask} from "./QueryInterfaces";
 
 interface IIRunningTaskRowProps {
     runningTask: IRunningTask;
-    onCancelTask(id: string);
+    onCancelTask(id: string): void;
 }
 
 class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
@@ -38,7 +38,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
                 <td>{path.basename(runningTask.resolved_script)}</td>
                 <td>{relativeTile} </td>
                 <td>{runningTask.work_units} </td>
-                <td>{runningTask.max_cpu ? runningTask.max_cpu.toFixed(2) : "N/A"} %</td>
+                <td>{runningTask.max_cpu ? `${runningTask.max_cpu.toFixed(2)} %` : "N/A"}</td>
                 <td>{runningTask.max_memory ? runningTask.max_memory.toFixed(2) : "N/A"}</td>
             </tr>);
     }
@@ -46,7 +46,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
 interface IRunningTasksTable {
     runningTasks: IRunningTask[];
-    onCancelTask(id: string);
+    onCancelTask(id: string): void;
 }
 
 export class RunningTasksTable extends React.Component<IRunningTasksTable, any> {
@@ -57,14 +57,14 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
             <Table striped condensed>
                 <thead>
                 <tr>
-                    <td/>
-                    <td>Started</td>
-                    <td>Elapsed</td>
-                    <td>Script</td>
-                    <td>Tile</td>
-                    <td>Work Units</td>
-                    <td>Max CPU</td>
-                    <td>Max Memory (MB)</td>
+                    <th/>
+                    <th>Started</th>
+                    <th>Elapsed</th>
+                    <th>Script</th>
+                    <th>Tile</th>
+                    <th>Work Units</th>
+                    <th>Max CPU</th>
+                    <th>Max Memory (MB)</th>
                 </tr>
                 </thead>
                 <tbody>

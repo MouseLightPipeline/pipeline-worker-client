@@ -8,9 +8,9 @@ import {IRunningTask} from "./QueryInterfaces";
 export class RunningTasks extends React.Component<any, any> {
     onCancelTask = (id: string) =>  {
         this.props.stopExecution(id)
-        .then((obj) => {
+        .then((obj: any) => {
             console.log(`Stopped ${obj}`);
-        }).catch((error) => {
+        }).catch((error: any) => {
             console.log("there was an error stopping the task", error);
         });
     };
@@ -40,7 +40,7 @@ class TablePanel extends React.Component<any, any> {
         let load = "";
 
         if (this.props.workUnitCapacity > 0) {
-            let usage = this.props.runningTasks.reduce((prev, next: IRunningTask) => {
+            let usage = this.props.runningTasks.reduce((prev: any, next: IRunningTask) => {
                 return prev + next.work_units;
             }, 0);
 

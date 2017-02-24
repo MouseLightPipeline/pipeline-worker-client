@@ -15,9 +15,11 @@ import {
     HelpBlock
 } from "react-bootstrap";
 
+import {ITaskDefinition} from "./QueryInterfaces";
+
 
 class StartTaskMenu extends React.Component<any, any> {
-    handleChange = (eventKey) => {
+    handleChange = (eventKey: any) => {
         this.props.onTaskSelectionChange(eventKey);
     };
 
@@ -28,7 +30,7 @@ class StartTaskMenu extends React.Component<any, any> {
 
         let title = "";
 
-        let rows = this.props.taskDefinitions.map(taskDefinition => {
+        let rows = this.props.taskDefinitions.map((taskDefinition: ITaskDefinition) => {
             if (taskDefinition.id === this.props.selectedTaskId) {
                 title = taskDefinition.name;
             }
@@ -63,7 +65,7 @@ interface IStartTaskComponentState {
 }
 
 export class TaskStartComponent extends React.Component<any, IStartTaskComponentState> {
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.onTaskSelectionChange = this.onTaskSelectionChange.bind(this);
         this.state = {selectedTaskDefinitionId: "", scriptArgString: "", scriptArgs: []};
@@ -90,7 +92,7 @@ export class TaskStartComponent extends React.Component<any, IStartTaskComponent
         };
 
         return (
-            <Panel collapsible defaultExpanded header="Start New Task" bsStyle="info">
+            <Panel collapsible defaultExpanded header="Start New Task (advanced)" bsStyle="info">
                 <Grid fluid>
                     <Row>
                         <Col lg={1}>

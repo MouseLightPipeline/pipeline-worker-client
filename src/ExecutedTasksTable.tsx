@@ -1,45 +1,99 @@
 import * as React from "react";
-import {Table, Button, Glyphicon} from "react-bootstrap"
+import {Table, Button, Glyphicon, ButtonGroup} from "react-bootstrap"
+import gql from "graphql-tag";
+import {graphql} from "react-apollo";
 import * as moment from "moment";
 
 import {
     IExecutedTask, ITaskDefinition, ExecutionStatusCode, CompletionStatusCode,
     ExecutionStatus
 } from "./QueryInterfaces";
+import {formatCpuUsage, formatMemoryFromMB, formatValue, formatDurationFromHours} from "./util/formatters";
 
 interface IExecutedTaskRowProps {
     executedTask: IExecutedTask;
-    taskDefinition: ITaskDefinition;
 }
 
-class ClearCompletedButton extends React.Component<any, any> {
+const ClearCompletedExecutionsMutation = gql`
+  mutation removeCompletedExecutionsWithCode($code: Int) {
+    removeCompletedExecutionsWithCode(code: $code)
+  }
+`;
+
+class RemoveCompleteSuccessButton extends React.Component<any, any> {
     onClick = () => {
-        this.props.clearComplete();
+        this.props.removeSuccessMutation(CompletionStatusCode.Success)
+        .then((count: any) => {
+            console.log(`Deleted ${count} items`);
+        }).catch((error: any) => {
+            console.log("there was an error clearing completed executions", error);
+        });
     };
 
     render() {
-        return (<Button bsStyle="warning" bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>
-            Clear Complete</Button>)
+        return (<Button bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>&nbsp;
+            Clear Success</Button>)
     }
 }
+
+const RemoveCompleteSuccessButtonWithQuery = graphql(ClearCompletedExecutionsMutation, {
+    props: ({mutate}) => ({
+        removeSuccessMutation: (code: number) => mutate({
+            variables: {
+                code: code
+            }
+        })
+    })
+})(RemoveCompleteSuccessButton);
+
+class RemoveCompleteErrorButton extends React.Component<any, any> {
+    onClick = () => {
+        this.props.removeErrorMutation(CompletionStatusCode.Error)
+        .then((count: any) => {
+            console.log(`Deleted ${count} items`);
+        }).catch((error: any) => {
+            console.log("there was an error clearing completed executions", error);
+        });
+    };
+
+    render() {
+        return (<Button bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>&nbsp;
+            Clear Errors</Button>)
+    }
+}
+
+const RemoveCompleteErrorButtonWithQuery = graphql(ClearCompletedExecutionsMutation, {
+    props: ({mutate}) => ({
+        removeErrorMutation: (code: number) => mutate({
+            variables: {
+                code: code
+            }
+        })
+    })
+})(RemoveCompleteErrorButton);
 
 class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
     render() {
         let executedTask = this.props.executedTask;
 
-        let taskDefinition = this.props.taskDefinition;
+        let taskDefinition = executedTask ? executedTask.task : null;
 
         let durationText = "N/A";
 
-        if (executedTask.completed_at !== null && executedTask.started_at !== null) {
-            let completed_at = new Date(parseInt(executedTask.completed_at));
+        if (executedTask.started_at !== null) {
             let started_at = new Date(parseInt(executedTask.started_at));
+
+            let completed_at = new Date();
+
+            if (executedTask.completed_at !== null) {
+                completed_at = new Date(parseInt(executedTask.completed_at));
+            }
 
             let completed = moment(completed_at);
             let delta = completed.diff(moment(started_at));
             let duration = moment.duration(delta);
 
-            durationText = duration.asSeconds() > 119 ? `${(delta / 60000).toFixed(1)} minutes` : `${(delta / 1000).toFixed(1)} seconds`;
+            durationText = formatDurationFromHours(duration.asMilliseconds() / 1000 / 3600);
         }
 
         let exitCodeText = (executedTask.completed_at !== null) ? executedTask.exit_code : "N/A";
@@ -52,16 +106,25 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
             relativeTile = parts[4];
         }
 
+        let style = {};
+
+        if (executedTask.completion_status_code === CompletionStatusCode.Error) {
+            style = {color: "red"};
+        } else if (executedTask.execution_status_code === ExecutionStatusCode.Running) {
+            style = {color: "green"};
+        }
+
         return (
             <tr>
-                <td>{taskDefinition ? taskDefinition.name : executedTask.resolved_script}</td>
-                <td>{relativeTile}</td>
-                <td>{ExecutionStatusCode[executedTask.execution_status_code]}</td>
-                <td>{ExecutionStatus[executedTask.last_process_status_code]}</td>
-                <td>{`${CompletionStatusCode[executedTask.completion_status_code]} (${exitCodeText})`}</td>
-                <td>{durationText}</td>
-                <td>{`${executedTask.max_cpu ? executedTask.max_cpu.toFixed(2) : "N/A"} | ${(executedTask.max_memory ? executedTask.max_memory.toFixed(2) : "N/A")}`}</td>
-                <td>{executedTask.work_units.toFixed(2)}</td>
+                <td style={style}>{taskDefinition ? taskDefinition.name : executedTask.resolved_script}</td>
+                <td style={style}>{relativeTile}</td>
+                <td style={style}>{ExecutionStatusCode[executedTask.execution_status_code]}</td>
+                <td style={style}>{ExecutionStatus[executedTask.last_process_status_code]}</td>
+                <td style={style}>{`${CompletionStatusCode[executedTask.completion_status_code]} (${exitCodeText})`}</td>
+                <td style={style}>{durationText}</td>
+                <td style={style}
+                    className="text-right">{`${formatCpuUsage(executedTask.max_cpu)} | ${formatMemoryFromMB(executedTask.max_memory)}`}</td>
+                <td style={style} className="text-center">{formatValue(executedTask.work_units, 0)}</td>
             </tr>);
     }
 }
@@ -69,32 +132,39 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
 interface IExecutedTasksTable {
     executedTasks: IExecutedTask[];
     taskDefinitions: ITaskDefinition[];
-    clearComplete();
 }
 
 export class ExecutedTasksTable extends React.Component<IExecutedTasksTable, any> {
     render() {
+        /*
         let rows = this.props.executedTasks.map(executedTask => {
             let t = this.props.taskDefinitions.filter(task => task.id === executedTask.task_id);
             let s = t.length ? t[0] : null;
             return (
                 <ExecutedTaskRow key={"tr_" + executedTask.id} taskDefinition={s} executedTask={executedTask}/>)
+        });*/
+        let rows = this.props.executedTasks.map(executedTask => {
+               return (<ExecutedTaskRow key={"tr_" + executedTask.id} executedTask={executedTask}/>);
         });
 
         return (
             <div>
-                <ClearCompletedButton clearComplete={this.props.clearComplete}/>
+                <ButtonGroup>
+                    <RemoveCompleteSuccessButtonWithQuery/>
+                    <RemoveCompleteErrorButtonWithQuery/>
+                </ButtonGroup>
+
                 <Table striped condensed>
                     <thead>
                     <tr>
-                        <td>Script</td>
-                        <td>Tile</td>
-                        <td>Status</td>
-                        <td>PM Status</td>
-                        <td>Exit Result (Code)</td>
-                        <td>Duration</td>
-                        <td>Max CPU (%) | Mem (MB)</td>
-                        <td>Work Units</td>
+                        <th>Task</th>
+                        <th>Tile</th>
+                        <th>Status</th>
+                        <th>PM Status</th>
+                        <th>Exit Result (Code)</th>
+                        <th>Duration</th>
+                        <th className="text-right">Max<br/> CPU | Memory</th>
+                        <th className="text-center">Work Units</th>
                     </tr>
                     </thead>
                     <tbody>

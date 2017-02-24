@@ -17,9 +17,9 @@ export function Layout() {
                 <small> Pipeline Worker</small>
             </PageHeader>
             <RunningTasksWithQuery/>
-            <TaskDefinitionsWithQuery/>
             <TaskStatisticsWithQuery/>
             <ExecutedTasksWithQuery/>
+            <TaskDefinitionsWithQuery/>
         </div>
     )
 }

@@ -5,15 +5,6 @@ import {ExecutedTasksTable} from "./ExecutedTasksTable";
 import {Loading} from "./Loading";
 
 export class ExecutedTasks extends React.Component<any, any> {
-    onClearComplete = () =>  {
-        this.props.clearCompletedExecutions()
-        .then((count) => {
-            console.log(`Deleted ${count} items`);
-        }).catch((error) => {
-            console.log("there was an error clearing completed executions", error);
-        });
-    };
-
     render() {
         let executedTasks = [];
 
@@ -29,7 +20,7 @@ export class ExecutedTasks extends React.Component<any, any> {
 
         return (
             <div>
-                {this.props.data.loading ? <Loading/> : <TablePanel taskDefinitions={taskDefinitions} executedTasks={executedTasks} clearComplete={this.onClearComplete}/>}
+                {this.props.data.loading ? <Loading/> : <TablePanel taskDefinitions={taskDefinitions} executedTasks={executedTasks}/>}
             </div>
         );
     }
@@ -41,7 +32,7 @@ class TablePanel extends React.Component<any, any> {
             <div>
                 <Panel collapsible defaultExpanded header="Task Executions" bsStyle="primary">
                     {this.props.executedTasks.length === 0 ? <NoTasks/> :
-                        <ExecutedTasksTable taskDefinitions={this.props.taskDefinitions} executedTasks={this.props.executedTasks} clearComplete={this.props.clearComplete}/> }
+                        <ExecutedTasksTable taskDefinitions={this.props.taskDefinitions} executedTasks={this.props.executedTasks}/> }
                 </Panel>
             </div>
         );

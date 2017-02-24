@@ -17,6 +17,7 @@
     "@types/react": "^0.14.41",
     "@types/react-bootstrap": "0.0.33",
     "@types/react-dom": "^0.14.17",
+    "@types/react-fontawesome": "^1.5.0",
     "@types/serve-static": "^1.7.31",
     "@types/webpack": "^1.12.35",
     "@types/webpack-dev-server": "^1.12.1",
@@ -44,6 +45,7 @@
     "react-apollo": "^0.5.8",
     "react-bootstrap": "^0.30.5",
     "react-dom": "^15.0.1",
+    "react-fontawesome": "^1.5.0",
     "react-tap-event-plugin": "^1.0.0",
     "subscriptions-transport-ws": "^0.2.5"
   }

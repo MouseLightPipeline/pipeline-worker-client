@@ -52,6 +52,7 @@ export interface IExecutedTask {
     id: string;
     machine_id: string;
     task_id: string;
+    task: ITaskDefinition;
     work_units: number;
     resolved_script: string;
     resolved_interpreter: string;
@@ -69,6 +70,7 @@ export interface IExecutedTask {
 export interface ITaskStatistics {
     id: string;
     task_id: string;
+    task: ITaskDefinition;
     num_execute: number;
     num_complete: number;
     num_error: number;

@@ -43,6 +43,10 @@ const ExecutedTasksQuery = gql`query {
         id
         machine_id
         task_id
+        task {
+            id
+            name
+        }
         work_units
         resolved_script
         resolved_interpreter
@@ -62,6 +66,10 @@ const TaskStatisticsQuery = gql`query {
     taskStatistics {
         id
         task_id
+        task {
+            id
+            name
+        }
         num_execute
         num_complete
         num_error
@@ -83,12 +91,6 @@ const StartTaskMutation = gql`
     startTask(taskDefinitionId:$taskDefinitionId, scriptArgs:$scriptArgs) {
       id
     }
-  }
-`;
-
-const ClearCompletedExecutionsMutation = gql`
-  mutation ClearCompletedExecutionsMutation {
-    clearAllCompleteExecutions
   }
 `;
 
@@ -119,11 +121,7 @@ export const RunningTasksWithQuery = graphql(RunningTasksQuery, {options: {pollI
 export const ExecutedTasksWithQuery = graphql(ExecutedTasksQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
     graphql(TaskDefinitionsQuery, {
         name: 'taskDefinitionsData'
-    })(graphql(ClearCompletedExecutionsMutation, {
-        props: ({mutate}) => ({
-            clearCompletedExecutions: () => mutate({})
-        })
-    })(ExecutedTasks)));
+    })(ExecutedTasks));
 
 export const TaskDefinitionsWithQuery = graphql(TaskDefinitionsQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
     graphql(StartTaskMutation, {

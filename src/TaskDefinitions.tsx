@@ -10,7 +10,7 @@ export class TaskDefinitions extends React.Component<any, any> {
         this.props.startTaskMutation(taskDefinitionId, scriptArgs)
         .then(() => {
             this.props.data.refetch();
-        }).catch((error) => {
+        }).catch((error: any) => {
             console.log("there was an error sending the query", error);
         });
     };
