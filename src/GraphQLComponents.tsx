@@ -21,6 +21,7 @@ const TaskDefinitionsQuery = gql`query {
       description
       script
       interpreter
+      args
       work_units
     }
 }`;

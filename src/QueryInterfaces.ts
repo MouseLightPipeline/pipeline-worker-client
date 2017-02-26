@@ -29,13 +29,25 @@ export enum ExecutionStatus {
     Deleted = 8
 }
 
+
+export interface ITaskDefinitionInput {
+    id: string;
+    name?: string;
+    description?: string;
+    script?: string;
+    interpreter?: string;
+    args?: string;
+    work_units?: number;
+}
+
 export interface ITaskDefinition {
     id: string;
     name: string;
+    description: string;
     script: string;
     interpreter: string;
+    args: string;
     work_units: number;
-    description: string;
 }
 
 export interface IRunningTask {
