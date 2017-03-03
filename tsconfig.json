@@ -9,7 +9,7 @@
   },
   "include": [
     "src/**/*",
-    "src/pipelineWorkerClientServer.ts"
+    "system.config.ts"
   ],
   "exclude": [
     "node_modules"
