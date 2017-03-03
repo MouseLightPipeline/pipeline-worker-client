@@ -33,7 +33,7 @@
     "eslint-plugin-react": "^3.6.2",
     "ts-loader": "^0.9.1",
     "typed-graphql": "^1.0.2",
-    "typescript": "^2.0.3",
+    "typescript": "~2.1.6",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.1"
   },
