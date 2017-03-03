@@ -8,7 +8,7 @@ import {TaskStatistics} from "./TaskStatistics";
 
 const env = process.env.NODE_ENV || "development";
 
-let pollingIntervalSeconds = 30;
+let pollingIntervalSeconds = 10;
 
 if (env !== "production") {
     pollingIntervalSeconds = 2;
