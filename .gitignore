@@ -28,3 +28,4 @@ tmp
 
 # Generated js in TypeScript source directories.
 src/**/*.js
+system.config.js

@@ -24,5 +24,10 @@ const configurations = {
 export default function () {
     let env = process.env.NODE_ENV || "development";
 
-    return configurations[env];
+    let config = configurations[env];
+
+    config.port = process.env.WORKER_CLIENT_PORT ||config.port;
+    config.apiPort = process.env.WORKER_API_PORT ||config.apiPort;
+
+    return config;
 }

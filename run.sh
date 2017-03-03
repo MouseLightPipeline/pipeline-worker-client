@@ -8,6 +8,10 @@ else
     export NODE_ENV=${1}
 fi
 
+if [ "$#" -gt 1 ]; then
+    source ${2}
+fi
+
 nohup npm run dev &
 
 NODE_ENV=${LAST_NODE_ENV}
