@@ -1,4 +1,4 @@
-const configurations = {
+const configurations: any = {
     development: {
         port: 4001,
         apiPort: 3001,
