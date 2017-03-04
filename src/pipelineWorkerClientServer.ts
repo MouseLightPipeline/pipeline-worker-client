@@ -5,10 +5,13 @@ const config = require("./../webpack.config.js");
 
 const serverConfig = require("../system.config").default();
 
+const localUri = `http://localhost:${serverConfig.port}`;
+const apiUri = `http://${serverConfig.apiHostname}:${serverConfig.apiPort}`;
+
 new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
     hot: true,
-    proxy: {"/graphql": `http://localhost:${serverConfig.apiPort}`},
+    proxy: {"/graphql": apiUri},
     historyApiFallback: true,
     noInfo: false,
     quiet: false
@@ -17,5 +20,6 @@ new WebpackDevServer(webpack(config), {
         return console.log(err);
     }
 
-    console.log(`Listening at http://localhost:${serverConfig.port}/`);
+    console.log(`Listening at ${localUri}/`);
+    console.log(`\t with graphql proxy to ${apiUri}`)
 });
