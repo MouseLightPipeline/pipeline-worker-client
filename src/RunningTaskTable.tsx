@@ -54,7 +54,7 @@ interface IRunningTasksTable {
 
 export class RunningTasksTable extends React.Component<IRunningTasksTable, any> {
     render() {
-        let rows = this.props.runningTasks.map(runningTask => (<RunningTaskRow key={"tr_" + runningTask.id} runningTask={runningTask} onCancelTask={this.props.onCancelTask}/>));
+        let rows = this.props.runningTasks.map(runningTask => (<RunningTaskRow key={"tr_r" + runningTask.id} runningTask={runningTask} onCancelTask={this.props.onCancelTask}/>));
 
         return (
             <Table striped condensed>
