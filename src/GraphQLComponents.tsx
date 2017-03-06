@@ -11,7 +11,7 @@ const env = process.env.NODE_ENV || "development";
 let pollingIntervalSeconds = 10;
 
 if (env !== "production") {
-    pollingIntervalSeconds = 2;
+    pollingIntervalSeconds = 30;
 }
 
 const TaskDefinitionsQuery = gql`query { 
