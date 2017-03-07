@@ -61,7 +61,7 @@ export interface IRunningTask {
     started_at: string;
 }
 
-export interface IExecutedTask {
+export interface ITaskExecution {
     id: string;
     machine_id: string;
     task_id: string;

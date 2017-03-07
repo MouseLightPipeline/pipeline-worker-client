@@ -5,13 +5,13 @@ import {graphql} from "react-apollo";
 import * as moment from "moment";
 
 import {
-    IExecutedTask, ITaskDefinition, ExecutionStatusCode, CompletionStatusCode,
+    ITaskExecution, ITaskDefinition, ExecutionStatusCode, CompletionStatusCode,
     ExecutionStatus
 } from "./QueryInterfaces";
 import {formatCpuUsage, formatMemoryFromMB, formatValue, formatDurationFromHours} from "./util/formatters";
 
 interface IExecutedTaskRowProps {
-    executedTask: IExecutedTask;
+    executedTask: ITaskExecution;
 }
 
 const ClearCompletedExecutionsMutation = gql`
@@ -130,19 +130,11 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
 }
 
 interface IExecutedTasksTable {
-    executedTasks: IExecutedTask[];
-    taskDefinitions: ITaskDefinition[];
+    executedTasks: ITaskExecution[];
 }
 
 export class ExecutedTasksTable extends React.Component<IExecutedTasksTable, any> {
     render() {
-        /*
-        let rows = this.props.executedTasks.map(executedTask => {
-            let t = this.props.taskDefinitions.filter(task => task.id === executedTask.task_id);
-            let s = t.length ? t[0] : null;
-            return (
-                <ExecutedTaskRow key={"tr_" + executedTask.id} taskDefinition={s} executedTask={executedTask}/>)
-        });*/
         let rows = this.props.executedTasks.map(executedTask => {
                return (<ExecutedTaskRow key={"tr_" + executedTask.id} executedTask={executedTask}/>);
         });

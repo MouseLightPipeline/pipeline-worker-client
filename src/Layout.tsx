@@ -2,9 +2,9 @@ import * as React from "react";
 import {PageHeader} from "react-bootstrap";
 
 import {
-    TaskDefinitionsWithQuery, RunningTasksWithQuery, ExecutedTasksWithQuery,
-    TaskStatisticsWithQuery
+    TaskDefinitionsWithQuery, RunningTasksWithQuery, TaskStatisticsWithQuery
 } from "./GraphQLComponents";
+import {ExecutedTasks} from "./ExecutedTasks";
 
 export function Layout() {
     let divStyle = {
@@ -18,7 +18,7 @@ export function Layout() {
             </PageHeader>
             <RunningTasksWithQuery/>
             <TaskStatisticsWithQuery/>
-            <ExecutedTasksWithQuery/>
+            <ExecutedTasks/>
             <TaskDefinitionsWithQuery/>
         </div>
     )

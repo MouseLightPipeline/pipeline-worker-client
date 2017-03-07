@@ -3,16 +3,11 @@ import gql from "graphql-tag";
 
 import {TaskDefinitions} from "./TaskDefinitions";
 import {RunningTasks} from "./RunningTasks";
-import {ExecutedTasks} from "./ExecutedTasks";
 import {TaskStatistics} from "./TaskStatistics";
 
 const env = process.env.NODE_ENV || "development";
 
-let pollingIntervalSeconds = 10;
-
-if (env !== "production") {
-    pollingIntervalSeconds = 30;
-}
+export const pollingIntervalSeconds = env !== "production" ? 10 : 30;
 
 const TaskDefinitionsQuery = gql`query { 
     taskDefinitions {
@@ -41,30 +36,6 @@ const RunningTasksQuery = gql`query {
         started_at
     }
     workUnitCapacity
-}`;
-
-const ExecutedTasksQuery = gql`query { 
-    taskExecutions {
-        id
-        machine_id
-        task_id
-        task {
-            id
-            name
-        }
-        work_units
-        resolved_script
-        resolved_interpreter
-        resolved_args
-        last_process_status_code
-        completion_status_code
-        execution_status_code
-        exit_code
-        max_cpu
-        max_memory
-        started_at
-        completed_at
-    }
 }`;
 
 const TaskStatisticsQuery = gql`query { 
@@ -122,11 +93,6 @@ export const RunningTasksWithQuery = graphql(RunningTasksQuery, {options: {pollI
             })
         })
     })(RunningTasks));
-
-export const ExecutedTasksWithQuery = graphql(ExecutedTasksQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
-    graphql(TaskDefinitionsQuery, {
-        name: 'taskDefinitionsData'
-    })(ExecutedTasks));
 
 export const TaskDefinitionsWithQuery = graphql(TaskDefinitionsQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
     graphql(StartTaskMutation, {
