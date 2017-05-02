@@ -1,13 +1,10 @@
 import * as React from "react";
-import {Table, Button, Glyphicon, ButtonGroup} from "react-bootstrap"
+import {Table, Button, Glyphicon, ButtonToolbar} from "react-bootstrap"
 import gql from "graphql-tag";
 import {graphql} from "react-apollo";
 import * as moment from "moment";
 
-import {
-    ITaskExecution, ITaskDefinition, ExecutionStatusCode, CompletionStatusCode,
-    ExecutionStatus
-} from "./QueryInterfaces";
+import {ITaskExecution, ExecutionStatusCode, CompletionStatusCode, ExecutionStatus} from "./QueryInterfaces";
 import {formatCpuUsage, formatMemoryFromMB, formatValue, formatDurationFromHours} from "./util/formatters";
 
 interface IExecutedTaskRowProps {
@@ -141,10 +138,10 @@ export class ExecutedTasksTable extends React.Component<IExecutedTasksTable, any
 
         return (
             <div>
-                <ButtonGroup>
+                <ButtonToolbar>
                     <RemoveCompleteSuccessButtonWithQuery/>
                     <RemoveCompleteErrorButtonWithQuery/>
-                </ButtonGroup>
+                </ButtonToolbar>
 
                 <Table striped condensed>
                     <thead>
