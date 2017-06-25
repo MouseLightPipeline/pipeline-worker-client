@@ -83,8 +83,10 @@ export class TaskStartComponent extends React.Component<any, IStartTaskComponent
     };
 
     render() {
+        let selectedTaskDefinitionId = this.state.selectedTaskDefinitionId;
+
         if (this.state.selectedTaskDefinitionId === "" && this.props.taskDefinitions.length > 0) {
-            this.state.selectedTaskDefinitionId = this.props.taskDefinitions[0].id;
+            selectedTaskDefinitionId = this.props.taskDefinitions[0].id;
         }
 
         let divStyle = {
@@ -99,7 +101,7 @@ export class TaskStartComponent extends React.Component<any, IStartTaskComponent
                             <FormGroup>
                                 <ControlLabel>&nbsp;</ControlLabel><br/>
                                 <StartTaskButton
-                                    selectedTaskDefinitionId={this.state.selectedTaskDefinitionId}
+                                    selectedTaskDefinitionId={selectedTaskDefinitionId}
                                     scriptArgs={this.state.scriptArgs} startTask={this.props.startTask}/>
                             </FormGroup>
                         </Col>
@@ -108,7 +110,7 @@ export class TaskStartComponent extends React.Component<any, IStartTaskComponent
                                 <ControlLabel>Task</ControlLabel>
                                 <StartTaskMenu onTaskSelectionChange={this.onTaskSelectionChange}
                                                taskDefinitions={this.props.taskDefinitions}
-                                               selectedTaskId={this.state.selectedTaskDefinitionId}/>
+                                               selectedTaskId={selectedTaskDefinitionId}/>
                             </FormGroup>
                         </Col>
                         <Col lg={9}>

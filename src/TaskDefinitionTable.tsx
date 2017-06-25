@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Table} from "react-bootstrap"
-import graphql from "react-apollo/graphql";
-import gql from "graphql-tag/index";
+import gql from "graphql-tag";
+import {graphql} from "react-apollo";
 
 import {ITaskDefinition, ITaskDefinitionInput} from "./QueryInterfaces";
 import {DynamicEditField, clickToEditFormatFunction} from "./Component/DynamicField";
@@ -30,7 +30,7 @@ class TaskDefinitionRow extends React.Component<ITaskDefinitionRowProps, any> {
     }
 
     onAcceptEdit(property: string, value: any): boolean {
-        let taskDefinition: any = {id: this.state.taskDefinition.id};
+        let taskDefinition: ITaskDefinitionInput = {id: this.state.taskDefinition.id};
 
         taskDefinition[property] = value;
 
@@ -83,7 +83,7 @@ class TaskDefinitionRow extends React.Component<ITaskDefinitionRowProps, any> {
 interface ITaskDefinitionsTable {
     taskDefinitions: ITaskDefinition[];
 
-    updateTaskDefinitionMutation(taskDefinition: ITaskDefinitionInput): Promise<ITaskDefinition>;
+    updateTaskDefinitionMutation?(taskDefinition: ITaskDefinitionInput): Promise<ITaskDefinition>;
 }
 
 class TaskDefinitionsTable extends React.Component<ITaskDefinitionsTable, any> {

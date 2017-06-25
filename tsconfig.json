@@ -5,11 +5,10 @@
     "target": "es6",
     "jsx": "react",
     "sourceMap": true,
-    "noImplicitAny": true
+    "experimentalDecorators": true
   },
   "include": [
-    "src/**/*",
-    "system.config.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"

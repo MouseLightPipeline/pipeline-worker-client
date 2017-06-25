@@ -1,8 +1,7 @@
 import * as React from "react";
 import {ApolloProvider} from "react-apollo";
 import ApolloClient from "apollo-client";
-import {createNetworkInterface, addTypename} from "apollo-client";
-// import {Client} from "subscriptions-transport-ws";
+import {createNetworkInterface} from "apollo-client";
 
 import {Layout} from "./Layout";
 
@@ -16,23 +15,14 @@ const networkInterface = createNetworkInterface({
     uri: "/graphql"
 });
 
-// const wsClient = new Client("ws://localhost:8080");
-
-// const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
-//    networkInterface,
-//    wsClient,
-// );
-
 const client = new ApolloClient({
     networkInterface: networkInterface,
-    queryTransformer: addTypename,
     dataIdFromObject: (result: any) => {
         if (result.id) {
             return result.id;
         }
         return null;
     },
-    shouldBatch: true,
     initialState: window.__APOLLO_STATE__
 });
 

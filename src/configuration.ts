@@ -1,31 +1,37 @@
 const configurations: any = {
     development: {
-        apiHostname: "localhost",
+        host: "localhost",
         port: 4001,
+        apiHostname: "localhost",
         apiPort: 3001,
         graphQlEndpoint: "/graphql",
     },
     test: {
-        apiHostname: "localhost",
+        host: "localhost",
         port: 4001,
+        apiHostname: "localhost",
         apiPort: 3001,
         graphQlEndpoint: "/graphql",
     },
     staging: {
-        apiHostname: "localhost",
+        host: "localhost",
         port: 4051,
+        apiHostname: "localhost",
         apiPort: 3051,
         graphQlEndpoint: "/graphql",
     },
     production: {
-        apiHostname: "localhost",
+        host: "localhost",
         port: 4001,
+        apiHostname: "localhost",
         apiPort: 3001,
         graphQlEndpoint: "/graphql",
     }
 };
 
-export default function () {
+export const Configuration = LoadConfiguration();
+
+function LoadConfiguration() {
     let env = process.env.NODE_ENV || "development";
 
     let config = configurations[env];

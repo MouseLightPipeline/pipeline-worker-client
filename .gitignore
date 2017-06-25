@@ -15,7 +15,9 @@ node_modules
 # JetBrains IDE 
 .idea
 
+*.js
 *.js.map
+*.jsx
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
@@ -25,7 +27,3 @@ dist
 
 # Temporary directories
 tmp
-
-# Generated js in TypeScript source directories.
-src/**/*.js
-system.config.js
