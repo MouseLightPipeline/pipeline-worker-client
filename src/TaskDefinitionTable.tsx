@@ -64,18 +64,11 @@ class TaskDefinitionRow extends React.Component<ITaskDefinitionRowProps, any> {
 
         return (
             <tr>
-                <td><DynamicEditField style={columnLimitStyle} initialValue={taskDefinition.name}
-                                      acceptFunction={value => this.onAcceptEdit("name", value)}
-                                      formatFunction={clickToEditFormatFunction}/></td>
-                <td><DynamicEditField style={columnLimitStyle} initialValue={taskDefinition.script}
-                                      acceptFunction={value => this.onAcceptEdit("script", value)}
-                                      formatFunction={clickToEditFormatFunction}/></td>
+                <td>{taskDefinition.name}</td>
+                <td>{taskDefinition.script}</td>
                 <td>{taskDefinition.interpreter === "none" ? "shell" : taskDefinition.interpreter}</td>
-                <td><DynamicEditField style={columnLimitStyle} initialValue={taskDefinition.work_units}
-                                      acceptFunction={value => this.onAcceptEdit("work_units", value)}/></td>
-                <td><DynamicEditField style={columnLimitStyle} initialValue={taskDefinition.description}
-                                      acceptFunction={value => this.onAcceptEdit("description", value)}
-                                      formatFunction={clickToEditFormatFunction}/></td>
+                <td>{taskDefinition.work_units}</td>
+                <td>{taskDefinition.description}</td>
             </tr>);
     }
 }
