@@ -1,6 +1,8 @@
 import * as webpack from "webpack";
 import * as WebpackDevServer from "webpack-dev-server";
 
+const debug = require("debug")("pipeline:worker-client:server");
+
 const config = require("./../webpack.config.js");
 
 import {Configuration} from "./configuration";
@@ -30,6 +32,6 @@ new WebpackDevServer(webpack(config), {
         return console.log(err);
     }
 
-    console.log(`Listening at ${localUri}`);
-    console.log(`\t with graphql proxy to ${apiUri}`)
+    debug(`Listening at ${localUri}`);
+    debug(`\t with graphql proxy to ${apiUri}`)
 });
