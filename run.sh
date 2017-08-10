@@ -2,13 +2,9 @@
 
 LAST_NODE_ENV=${NODE_ENV}
 
-if [ -z "$1" ]; then
-    export NODE_ENV=production
-else
-    export NODE_ENV=${1}
-fi
+export NODE_ENV=production
 
-if [ "$#" -gt 1 ]; then
+if [ "$#" -gt 0 ]; then
     source ${2}
 fi
 
