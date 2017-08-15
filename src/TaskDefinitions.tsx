@@ -2,7 +2,6 @@ import * as React from "react";
 import {Panel} from "react-bootstrap"
 
 import {TaskDefinitionTableWithQuery} from "./TaskDefinitionTable";
-import {TaskStartComponent} from "./TaskStartContainer";
 import {Loading} from "./Loading";
 
 export class TaskDefinitions extends React.Component<any, any> {
@@ -37,7 +36,6 @@ class TablePanel extends React.Component<any, any> {
                 <Panel collapsible defaultExpanded header="Available Tasks" bsStyle="primary">
                     <TaskDefinitionTableWithQuery taskDefinitions={this.props.taskDefinitions}/>
                 </Panel>
-                <TaskStartComponent taskDefinitions={this.props.taskDefinitions} startTask={this.props.startTask}/>
             </div>
         );
     }

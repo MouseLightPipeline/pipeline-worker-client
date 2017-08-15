@@ -144,7 +144,7 @@ interface ITaskStatisticsTable {
 
 export class TaskStatisticsTable extends React.Component<ITaskStatisticsTable, any> {
     render() {
-        let rows = this.props.statistics.map(s => (
+        let rows = this.props.statistics.filter(s => s.task.id !== null).map(s => (
             <TaskStatisticsRow key={"tr_" + s.id} statistic={s} definitions={this.props.definitions}/>));
 
         return (

@@ -5,9 +5,7 @@ import {TaskDefinitions} from "./TaskDefinitions";
 import {RunningTasks} from "./RunningTasks";
 import {TaskStatistics} from "./TaskStatistics";
 
-const env = process.env.NODE_ENV || "development";
-
-export const pollingIntervalSeconds = env !== "production" ? 10 : 30;
+export const pollingIntervalSeconds = 30;
 
 const TaskDefinitionsQuery = gql`query { 
     taskDefinitions {

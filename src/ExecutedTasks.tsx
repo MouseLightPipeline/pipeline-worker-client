@@ -88,7 +88,6 @@ class TablePanel extends React.Component<any, any> {
     }
 
     public componentWillReceiveProps(nextProps: any) {
-        console.log(nextProps)
         if (nextProps.data && nextProps.data.taskExecutionPage) {
             nextProps.onCursorChanged(nextProps.data.taskExecutionPage);
         }

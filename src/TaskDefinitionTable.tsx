@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import {graphql} from "react-apollo";
 
 import {ITaskDefinition, ITaskDefinitionInput} from "./QueryInterfaces";
-import {DynamicEditField, clickToEditFormatFunction} from "./Component/DynamicField";
 
 interface ITaskDefinitionRowProps {
     taskDefinition: ITaskDefinition;

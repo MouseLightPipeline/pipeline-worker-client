@@ -1,22 +1,17 @@
 {
-  "name": "ml-pipeline-worker-client",
-  "version": "0.1.0",
+  "name": "pipeline-worker-client",
+  "version": "1.0.0",
   "description": "",
-  "scripts": {
-    "dev": "DEBUG=pipeline* node $NODE_DEBUG_OPTION src/pipelineWorkerClientServer.js",
-    "start": "node src/pipelineWorkerClientServer.js",
-    "lint": "eslint src"
-  },
   "keywords": [],
   "author": "Patrick Edson <pedson@leapscientific.com> (http://github.com/pedson)",
-  "license": "Janelia",
-  "devDependencies": {
-    "@types/react": "^15.0.31",
-    "@types/react-bootstrap": "^0.0.51",
-    "@types/react-dom": "^15.5.1",
-    "@types/react-fontawesome": "^1.5.0",
-    "@types/webpack": "2.2.6",
-    "@types/webpack-dev-server": "^2.4.0"
+  "license": "LicenseRef-LICENSE",
+  "dockerImageName": "worker-client",
+  "dockerRepository": "mouselightpipeline",
+  "scripts": {
+    "devel": "DEBUG=pipeline* node $NODE_DEBUG_OPTION src/pipelineWorkerClientServer.js",
+    "start": "node src/pipelineWorkerClientServer.js",
+    "docker-build": "gulp docker-build",
+    "docker-release": "gulp docker-release"
   },
   "dependencies": {
     "graphql": "^0.10.3",
@@ -31,5 +26,15 @@
     "typescript": "^2.3.4",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/react": "^15.0.31",
+    "@types/react-bootstrap": "^0.0.51",
+    "@types/react-dom": "^15.5.1",
+    "@types/react-fontawesome": "^1.5.0",
+    "@types/webpack": "2.2.6",
+    "@types/webpack-dev-server": "^2.4.0",
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.6.3"
   }
 }

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-LAST_NODE_ENV=${NODE_ENV}
-
-export NODE_ENV=production
-
-if [ "$#" -gt 0 ]; then
-    source ${1}
+if [ -a "options.sh" ]; then
+    source "options.sh"
 fi
 
-nohup npm run dev &
+# Default is "pipeline-worker-api" which is mostly guaranteed to not be correct when running standalone.
+if [ -z "${PIPELINE_WORKER_API_HOST}" ]; then
+    echo "PIPELINE_WORKER_API_HOST must be set."
+    exit 1
+fi
 
-NODE_ENV=${LAST_NODE_ENV}
+nohup npm run devel &
