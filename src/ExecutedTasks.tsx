@@ -110,8 +110,8 @@ const ExecutedConnectionsQuery = gql`query($executedPageFirst: Int, $executedPag
     edges {
       node {
         id
-        machine_id
-        task_id
+        worker_id
+        task_definition_id
         task {
           id
           name
@@ -142,8 +142,8 @@ const ExecutedPageQuery = gql`query($requestedOffset: Int, $executedPageLimit: I
     hasNextPage
     items {
       id
-      machine_id
-      task_id
+      worker_id
+      task_definition_id
       task {
         id
         name

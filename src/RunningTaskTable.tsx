@@ -19,7 +19,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
     render() {
         const runningTask = this.props.runningTask;
 
-        const elapsed = moment().diff(moment(new Date(parseInt(runningTask.started_at))));
+        const elapsed = moment().diff(moment(new Date(runningTask.started_at)));
 
         const elapsedText = formatDurationFromHours(moment.duration(elapsed).asMilliseconds() / 1000 / 3600);
 

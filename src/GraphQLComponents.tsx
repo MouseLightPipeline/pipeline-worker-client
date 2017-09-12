@@ -5,7 +5,7 @@ import {TaskDefinitions} from "./TaskDefinitions";
 import {RunningTasks} from "./RunningTasks";
 import {TaskStatistics} from "./TaskStatistics";
 
-export const pollingIntervalSeconds = 30;
+export const pollingIntervalSeconds = 10;
 
 const TaskDefinitionsQuery = gql`query { 
     taskDefinitions {
@@ -23,7 +23,7 @@ const RunningTasksQuery = gql`query {
     runningTasks {
         id
         work_units
-        task_id
+        task_definition_id
         task {
             id
             name
@@ -39,7 +39,7 @@ const RunningTasksQuery = gql`query {
 const TaskStatisticsQuery = gql`query { 
     taskStatistics {
         id
-        task_id
+        task_definition_id
         task {
             id
             name

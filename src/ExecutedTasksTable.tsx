@@ -78,12 +78,12 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
         let durationText = "N/A";
 
         if (executedTask.started_at !== null) {
-            let started_at = new Date(parseInt(executedTask.started_at));
+            let started_at = new Date(executedTask.started_at);
 
             let completed_at = new Date();
 
             if (executedTask.completed_at !== null) {
-                completed_at = new Date(parseInt(executedTask.completed_at));
+                completed_at = new Date(executedTask.completed_at);
             }
 
             let completed = moment(completed_at);

@@ -29,7 +29,6 @@ export enum ExecutionStatus {
     Deleted = 8
 }
 
-
 export interface ITaskDefinitionInput {
     id: string;
     name?: string;
@@ -53,7 +52,7 @@ export interface ITaskDefinition {
 export interface IRunningTask {
     id: string;
     work_units: number;
-    task_id: string;
+    task_definition_id: string;
     task: ITaskDefinition;
     resolved_args: string;
     max_cpu: number;
@@ -63,8 +62,8 @@ export interface IRunningTask {
 
 export interface ITaskExecution {
     id: string;
-    machine_id: string;
-    task_id: string;
+    worker_id: string;
+    task_definition_id: string;
     task: ITaskDefinition;
     work_units: number;
     resolved_script: string;
@@ -76,13 +75,13 @@ export interface ITaskExecution {
     exit_code: number;
     max_cpu: number;
     max_memory: number;
-    started_at: string;
-    completed_at: string;
+    started_at: number;
+    completed_at: number;
 }
 
 export interface ITaskStatistics {
     id: string;
-    task_id: string;
+    task_definition_id: string;
     task: ITaskDefinition;
     num_execute: number;
     num_complete: number;
