@@ -26,3 +26,5 @@ build/Release
 
 # Temporary directories
 tmp
+
+options.sh
