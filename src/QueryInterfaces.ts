@@ -13,7 +13,8 @@ export enum CompletionStatusCode {
     Incomplete = 1,
     Cancel = 2,
     Success = 3,
-    Error = 4
+    Error = 4,
+    Resubmitted = 5
 }
 
 export enum ExecutionStatus {
@@ -63,8 +64,10 @@ export interface IRunningTask {
 export interface ITaskExecution {
     id: string;
     worker_id: string;
+    tile_id: string;
     task_definition_id: string;
     task: ITaskDefinition;
+    pipeline_stage_id: string;
     work_units: number;
     resolved_script: string;
     resolved_interpreter: string;
