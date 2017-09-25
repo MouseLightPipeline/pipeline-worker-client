@@ -11,3 +11,5 @@ if [ -z "${PIPELINE_WORKER_API_HOST}" ]; then
 fi
 
 nohup npm run devel &
+
+chmod 664 nohup.out
