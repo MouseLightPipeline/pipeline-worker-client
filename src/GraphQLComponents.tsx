@@ -7,6 +7,15 @@ import {TaskStatistics} from "./TaskStatistics";
 
 export const pollingIntervalSeconds = 10;
 
+export const WorkerQuery = gql`query {
+    worker {
+      id
+      process_id
+      work_capacity
+      is_cluster_proxy
+    }
+}`;
+
 const TaskDefinitionsQuery = gql`query { 
     taskDefinitions {
       id
@@ -33,7 +42,6 @@ const RunningTasksQuery = gql`query {
         max_memory
         started_at
     }
-    workUnitCapacity
 }`;
 
 const TaskStatisticsQuery = gql`query { 

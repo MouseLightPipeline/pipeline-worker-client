@@ -43,13 +43,40 @@ const RemoveCompleteSuccessButtonWithQuery = graphql(ClearCompletedExecutionsMut
     })
 })(RemoveCompleteSuccessButton);
 
+class RemoveCompleteCanceledButton extends React.Component<any, any> {
+    onClick = () => {
+        this.props.removeSuccessMutation(CompletionStatusCode.Cancel)
+            .then((count: any) => {
+                console.log(`Deleted ${count} items`);
+            }).catch((error: any) => {
+            console.log("there was an error clearing canceled executions", error);
+        });
+    };
+
+    render() {
+        return (<Button bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>&nbsp;
+            Clear Canceled</Button>)
+    }
+}
+
+const RemoveCompleteCanceledButtonWithQuery = graphql(ClearCompletedExecutionsMutation, {
+    props: ({mutate}) => ({
+        removeSuccessMutation: (code: number) => mutate({
+            variables: {
+                code: code
+            }
+        })
+    })
+})(RemoveCompleteCanceledButton);
+
+
 class RemoveCompleteErrorButton extends React.Component<any, any> {
     onClick = () => {
         this.props.removeErrorMutation(CompletionStatusCode.Error)
         .then((count: any) => {
             console.log(`Deleted ${count} items`);
         }).catch((error: any) => {
-            console.log("there was an error clearing completed executions", error);
+            console.log("there was an error clearing errored executions", error);
         });
     };
 
@@ -140,6 +167,7 @@ export class ExecutedTasksTable extends React.Component<IExecutedTasksTable, any
             <div>
                 <ButtonToolbar>
                     <RemoveCompleteSuccessButtonWithQuery/>
+                    <RemoveCompleteCanceledButtonWithQuery/>
                     <RemoveCompleteErrorButtonWithQuery/>
                 </ButtonToolbar>
 

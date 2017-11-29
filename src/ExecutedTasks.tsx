@@ -5,7 +5,6 @@ import {graphql} from "react-apollo";
 import gql from "graphql-tag";
 
 import {ExecutedTasksTable} from "./ExecutedTasksTable";
-import {Loading} from "./Loading";
 import {pollingIntervalSeconds} from "./GraphQLComponents";
 import {ITaskExecution} from "./QueryInterfaces";
 
@@ -73,7 +72,7 @@ class TablePanel extends React.Component<any, any> {
 
         return (
             <div>
-                {this.props.data.loading ? <Loading/> :
+
                     <Panel collapsible defaultExpanded header="Task Executions" bsStyle="primary">
                         {pageCount > 1 ?
                             <Pagination prev next first last ellipsis boundaryLinks items={pageCount} maxButtons={10}
@@ -82,7 +81,6 @@ class TablePanel extends React.Component<any, any> {
                         {executedTasks.length === 0 ? <NoTasks/> :
                             <ExecutedTasksTable executedTasks={executedTasks}/> }
                     </Panel>
-                }
             </div>
         );
     }

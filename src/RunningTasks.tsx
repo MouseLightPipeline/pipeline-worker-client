@@ -2,7 +2,6 @@ import * as React from "react";
 import {Panel} from "react-bootstrap"
 
 import {RunningTasksTable} from "./RunningTaskTable";
-import {Loading} from "./Loading";
 import {IRunningTask} from "./QueryInterfaces";
 
 export class RunningTasks extends React.Component<any, any> {
@@ -22,14 +21,9 @@ export class RunningTasks extends React.Component<any, any> {
             runningTasks = this.props.data.runningTasks;
         }
 
-        let workUnitCapacity = -1;
-        if (this.props.data && this.props.data.workUnitCapacity) {
-            workUnitCapacity = this.props.data.workUnitCapacity;
-        }
-
         return (
             <div>
-                {this.props.data.loading ? <Loading/> : <TablePanel runningTasks={runningTasks} workUnitCapacity={workUnitCapacity} onCancelTask={this.onCancelTask}/>}
+                <TablePanel runningTasks={runningTasks} worker={this.props.worker} onCancelTask={this.onCancelTask}/>
             </div>
         );
     }
@@ -39,14 +33,26 @@ class TablePanel extends React.Component<any, any> {
     render() {
         let load = "";
 
-        if (this.props.workUnitCapacity > 0) {
-            let usage = this.props.runningTasks.reduce((prev: any, next: IRunningTask) => {
-                return prev + next.work_units;
-            }, 0);
+        let workUnitCapacity = -1;
 
-            let usagePercentage = 100 * usage/this.props.workUnitCapacity;
+        if (this.props.worker) {
+            workUnitCapacity = this.props.worker.work_capacity;
+        }
 
-            load = ` - Load ${usagePercentage.toFixed(1)}% (${usage.toFixed(1)}/${this.props.workUnitCapacity.toFixed(1)})`;
+        let usage = 0;
+
+        if (workUnitCapacity > 0) {
+            if(this.props.worker.is_cluster_proxy) {
+                usage = this.props.runningTasks.length;
+            } else {
+                usage = this.props.runningTasks.reduce((prev: any, next: IRunningTask) => {
+                    return prev + next.work_units;
+                }, 0);
+            }
+
+            let usagePercentage = 100 * usage/workUnitCapacity;
+
+            load = ` - Load ${usagePercentage.toFixed(1)}% (${usage.toFixed(1)}/${workUnitCapacity.toFixed(1)})`;
         }
 
         return (
