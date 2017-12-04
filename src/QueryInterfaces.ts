@@ -4,7 +4,7 @@ export enum ExecutionStatusCode {
     Undefined = 0,
     Initializing = 1,
     Running = 2,
-    Orphaned = 3,   // Was marked initialized/running but can not longer find in process manager list
+    Zombie = 3,   // Was marked initialized/running but can not longer find in process manager list
     Complete = 4
 }
 
@@ -20,14 +20,15 @@ export enum CompletionStatusCode {
 export enum ExecutionStatus {
     Undefined = -1,
     Unknown = 0,
-    Started = 1,
-    Online = 2,
-    Restarted = 3,
-    RestartOverLimit = 4,
-    Stopping = 5,
-    Stopped = 6,
-    Exited = 7,
-    Deleted = 8
+    Pending = 1,
+    Started = 2,
+    Online = 3,
+    Restarted = 4,
+    RestartOverLimit = 5,
+    Stopping = 6,
+    Stopped = 7,
+    Exited = 8,
+    Deleted = 9
 }
 
 export interface ITaskDefinitionInput {
