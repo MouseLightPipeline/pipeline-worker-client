@@ -23,8 +23,10 @@ const TaskDefinitionsQuery = gql`query {
       description
       script
       interpreter
-      args
+      script_args
+      cluster_args
       work_units
+      cluster_work_units
     }
 }`;
 
