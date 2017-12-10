@@ -1,6 +1,6 @@
 const configurations: any = {
     production: {
-        host: "localhost",
+        host: "",
         port: 3600,
         apiHostname: "pipeline-worker-api",
         apiPort: 3500,
