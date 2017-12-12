@@ -27,6 +27,7 @@ const TaskDefinitionsQuery = gql`query {
       cluster_args
       work_units
       cluster_work_units
+      log_prefix
     }
 }`;
 

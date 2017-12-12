@@ -47,8 +47,11 @@ export interface ITaskDefinition {
     description: string;
     script: string;
     interpreter: string;
-    args: string;
+    script_args: string;
+    cluster_args: string;
     work_units: number;
+    cluster_work_units: number;
+    log_prefix: string;
 }
 
 export interface IRunningTask {
@@ -70,9 +73,11 @@ export interface ITaskExecution {
     task: ITaskDefinition;
     pipeline_stage_id: string;
     work_units: number;
+    cluster_work_units: number;
     resolved_script: string;
     resolved_interpreter: string;
     resolved_script_args: string;
+    resolve_log_path: string;
     last_process_status_code: number;
     completion_status_code: number;
     execution_status_code: number;
