@@ -10,7 +10,7 @@ if [ -z "${PIPELINE_WORKER_API_HOST}" ]; then
     exit 1
 fi
 
-nohup npm run devel &
+nohup node server/pipelineWorkerClientServer.js &
 
 sleep 2
 
