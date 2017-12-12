@@ -23,7 +23,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
         const elapsedText = formatDurationFromHours(moment.duration(elapsed).asMilliseconds() / 1000 / 3600);
 
-        const parts = runningTask.resolved_args.split(",");
+        const parts = runningTask.resolved_script_args.split(",");
 
         let relativeTile = "(can't parse)";
 

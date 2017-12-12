@@ -39,7 +39,7 @@ const RunningTasksQuery = gql`query {
             id
             name
         }
-        resolved_args
+        resolved_script_args
         max_cpu
         max_memory
         started_at

@@ -56,7 +56,7 @@ export interface IRunningTask {
     work_units: number;
     task_definition_id: string;
     task: ITaskDefinition;
-    resolved_args: string;
+    resolved_script_args: string;
     max_cpu: number;
     max_memory: number;
     started_at: string;
@@ -72,7 +72,7 @@ export interface ITaskExecution {
     work_units: number;
     resolved_script: string;
     resolved_interpreter: string;
-    resolved_args: string;
+    resolved_script_args: string;
     last_process_status_code: number;
     completion_status_code: number;
     execution_status_code: number;

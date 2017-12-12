@@ -117,7 +117,7 @@ const ExecutedConnectionsQuery = gql`query($executedPageFirst: Int, $executedPag
         work_units
         resolved_script
         resolved_interpreter
-        resolved_args
+        resolved_script_args
         last_process_status_code
         completion_status_code
         execution_status_code
@@ -149,7 +149,7 @@ const ExecutedPageQuery = gql`query($requestedOffset: Int, $executedPageLimit: I
       work_units
       resolved_script
       resolved_interpreter
-      resolved_args
+      resolved_script_args
       last_process_status_code
       completion_status_code
       execution_status_code

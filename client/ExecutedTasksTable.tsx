@@ -122,7 +122,7 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
 
         let exitCodeText = (executedTask.completed_at !== null) ? executedTask.exit_code : "N/A";
 
-        const parts = executedTask.resolved_args.split(",");
+        const parts = executedTask.resolved_script_args.split(",");
 
         let relativeTile = "(can't parse)";
 
