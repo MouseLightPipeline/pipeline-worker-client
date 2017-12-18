@@ -4,8 +4,9 @@ export enum ExecutionStatusCode {
     Undefined = 0,
     Initializing = 1,
     Running = 2,
-    Zombie = 3,   // Was marked initialized/running but can not longer find in process manager list
-    Complete = 4
+    Zombie = 3,   // Was marked initialized/running but can not longer find in process manager list/cluster jobs
+    Orphaned = 4, // Found in process manager with metadata that associates to worker, but no linked task in database
+    Completed = 5
 }
 
 export enum CompletionStatusCode {
