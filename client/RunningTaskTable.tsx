@@ -23,8 +23,8 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
             moment().diff(moment(new Date(runningTask.started_at)));
 
         const elapsedText = runningTask.last_process_status_code === ExecutionStatus.Pending ?
-            `pending ${moment.duration(elapsed).humanize(true)}` :
-            formatDurationFromHours(moment.duration(elapsed).asMilliseconds() / 1000 / 3600);
+            `pending ${moment.duration(elapsed).humanize()}` :
+            `${moment.duration(elapsed).humanize()}`;
 
         const parts = runningTask.resolved_script_args.split(",");
 
