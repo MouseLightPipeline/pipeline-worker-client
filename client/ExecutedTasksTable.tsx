@@ -69,7 +69,6 @@ const RemoveCompleteCanceledButtonWithQuery = graphql(ClearCompletedExecutionsMu
     })
 })(RemoveCompleteCanceledButton);
 
-
 class RemoveCompleteErrorButton extends React.Component<any, any> {
     onClick = () => {
         this.props.removeErrorMutation(CompletionStatusCode.Error)

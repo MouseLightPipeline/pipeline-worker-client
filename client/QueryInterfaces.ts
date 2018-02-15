@@ -63,7 +63,9 @@ export interface IRunningTask {
     resolved_script_args: string;
     max_cpu: number;
     max_memory: number;
+    submitted_at: string;
     started_at: string;
+    last_process_status_code: ExecutionStatus;
 }
 
 export interface ITaskExecution {

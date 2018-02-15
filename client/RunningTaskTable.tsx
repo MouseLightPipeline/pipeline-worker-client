@@ -1,9 +1,8 @@
-import * as path from "path";
 import * as React from "react";
 import {Table, Button, Glyphicon} from "react-bootstrap"
 import moment = require("moment");
 
-import {IRunningTask} from "./QueryInterfaces";
+import {ExecutionStatus, IRunningTask} from "./QueryInterfaces";
 import {formatMemoryFromMB, formatCpuUsage, formatDurationFromHours} from "./util/formatters";
 
 interface IIRunningTaskRowProps {
@@ -19,9 +18,13 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
     render() {
         const runningTask = this.props.runningTask;
 
-        const elapsed = moment().diff(moment(new Date(runningTask.started_at)));
+        const elapsed = runningTask.last_process_status_code === ExecutionStatus.Pending ?
+            moment().diff(moment(new Date(runningTask.submitted_at))) :
+            moment().diff(moment(new Date(runningTask.started_at)));
 
-        const elapsedText = formatDurationFromHours(moment.duration(elapsed).asMilliseconds() / 1000 / 3600);
+        const elapsedText = runningTask.last_process_status_code === ExecutionStatus.Pending ?
+            `pending ${moment.duration(elapsed).humanize(true)}` :
+            formatDurationFromHours(moment.duration(elapsed).asMilliseconds() / 1000 / 3600);
 
         const parts = runningTask.resolved_script_args.split(",");
 
@@ -35,7 +38,8 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
         return (
             <tr>
-                <td><Button bsSize="xs" bsStyle="danger" onClick={this.onCancelClick}><Glyphicon glyph="stop"/> Cancel</Button></td>
+                <td><Button bsSize="xs" bsStyle="danger" onClick={this.onCancelClick}><Glyphicon
+                    glyph="stop"/> Cancel</Button></td>
                 <td>{new Date(parseInt(runningTask.started_at)).toLocaleString()}</td>
                 <td>{elapsedText}</td>
                 <td>{taskName}</td>
@@ -54,7 +58,9 @@ interface IRunningTasksTable {
 
 export class RunningTasksTable extends React.Component<IRunningTasksTable, any> {
     render() {
-        let rows = this.props.runningTasks.map(runningTask => (<RunningTaskRow key={"tr_r" + runningTask.id} runningTask={runningTask} onCancelTask={this.props.onCancelTask}/>));
+        let rows = this.props.runningTasks.map(runningTask => (
+            <RunningTaskRow key={"tr_r" + runningTask.id} runningTask={runningTask}
+                            onCancelTask={this.props.onCancelTask}/>));
 
         return (
             <Table striped condensed>

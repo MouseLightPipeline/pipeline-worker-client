@@ -43,7 +43,9 @@ const RunningTasksQuery = gql`query {
         resolved_script_args
         max_cpu
         max_memory
+        submitted_at
         started_at
+        last_process_status_code
     }
 }`;
 
