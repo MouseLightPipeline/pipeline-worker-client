@@ -1,9 +1,9 @@
 const configurations: any = {
     production: {
         host: "",
-        port: 3600,
+        port: 6301,
         apiHostname: "pipeline-worker-api",
-        apiPort: 3500,
+        apiPort: 6201,
         graphQlEndpoint: "/graphql",
     }
 };
