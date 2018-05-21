@@ -60,6 +60,8 @@ export interface IRunningTask {
     work_units: number;
     task_definition_id: string;
     task: ITaskDefinition;
+    tile_id: string;
+    resolved_script: string;
     resolved_script_args: string;
     max_cpu: number;
     max_memory: number;

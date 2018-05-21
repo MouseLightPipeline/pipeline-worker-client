@@ -26,15 +26,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
             `pending ${moment.duration(elapsed).humanize()}` :
             `${moment.duration(elapsed).humanize()}`;
 
-        const parts = runningTask.resolved_script_args.split(",");
-
-        let relativeTile = "(can't parse)";
-
-        if (parts.length > 4) {
-            relativeTile = parts[4];
-        }
-
-        const taskName = runningTask && runningTask.task ? runningTask.task.name : "(unknown)";
+        const taskName = runningTask.resolved_script; // runningTask && runningTask.task ? runningTask.task.name : "(unknown)";
 
         return (
             <tr>
@@ -43,7 +35,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
                 <td>{new Date(parseInt(runningTask.started_at)).toLocaleString()}</td>
                 <td>{elapsedText}</td>
                 <td>{taskName}</td>
-                <td>{relativeTile} </td>
+                <td>{runningTask.tile_id} </td>
                 <td>{runningTask.work_units} </td>
                 <td>{formatCpuUsage(runningTask.max_cpu)}</td>
                 <td>{formatMemoryFromMB(runningTask.max_memory)}</td>

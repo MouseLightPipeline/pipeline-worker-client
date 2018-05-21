@@ -121,14 +121,6 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
 
         let exitCodeText = (executedTask.completed_at !== null) ? executedTask.exit_code : "N/A";
 
-        const parts = executedTask.resolved_script_args.split(",");
-
-        let relativeTile = "(can't parse)";
-
-        if (parts.length > 4) {
-            relativeTile = parts[4];
-        }
-
         let style = {};
 
         if (executedTask.completion_status_code === CompletionStatusCode.Error) {
@@ -140,7 +132,7 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
         return (
             <tr>
                 <td style={style}>{taskDefinition ? taskDefinition.name : executedTask.resolved_script}</td>
-                <td style={style}>{relativeTile}</td>
+                <td style={style}>{executedTask.tile_id}</td>
                 <td style={style}>{ExecutionStatusCode[executedTask.execution_status_code]}</td>
                 <td style={style}>{ExecutionStatus[executedTask.last_process_status_code]}</td>
                 <td style={style}>{`${CompletionStatusCode[executedTask.completion_status_code]} (${exitCodeText})`}</td>

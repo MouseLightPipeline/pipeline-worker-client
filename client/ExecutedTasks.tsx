@@ -146,6 +146,7 @@ const ExecutedPageQuery = gql`query($requestedOffset: Int, $executedPageLimit: I
         id
         name
       }
+      tile_id
       work_units
       resolved_script
       resolved_interpreter
