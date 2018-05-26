@@ -3,7 +3,7 @@ import {graphql} from "react-apollo";
 import {PageHeader} from "react-bootstrap";
 
 import {
-    TaskDefinitionsWithQuery, RunningTasksWithQuery, TaskStatisticsWithQuery, WorkerQuery
+    RunningTasksWithQuery, TaskStatisticsWithQuery, WorkerQuery
 } from "./GraphQLComponents";
 import {ExecutedTasks} from "./ExecutedTasks";
 import {Loading} from "./Loading";
@@ -36,7 +36,6 @@ class _Layout extends React.Component<any, any> {
                 <RunningTasksWithQuery worker={worker}/>
                 <TaskStatisticsWithQuery/>
                 <ExecutedTasks/>
-                <TaskDefinitionsWithQuery/>
             </div>
         );
     }

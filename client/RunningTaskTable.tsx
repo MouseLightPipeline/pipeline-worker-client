@@ -3,7 +3,7 @@ import {Table, Button, Glyphicon} from "react-bootstrap"
 import moment = require("moment");
 
 import {ExecutionStatus, IRunningTask} from "./QueryInterfaces";
-import {formatMemoryFromMB, formatCpuUsage, formatDurationFromHours} from "./util/formatters";
+import {formatMemoryFromMB, formatCpuUsage} from "./util/formatters";
 
 interface IIRunningTaskRowProps {
     runningTask: IRunningTask;

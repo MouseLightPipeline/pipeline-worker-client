@@ -1,7 +1,6 @@
 import {graphql} from "react-apollo";
 import gql from "graphql-tag";
 
-import {TaskDefinitions} from "./TaskDefinitions";
 import {RunningTasks} from "./RunningTasks";
 import {TaskStatistics} from "./TaskStatistics";
 
@@ -75,14 +74,6 @@ const TaskStatisticsQuery = gql`query {
     }
 }`;
 
-const StartTaskMutation = gql`
-  mutation StartTaskMutation($taskDefinitionId: String!, $scriptArgs: [String!]) {
-    startTask(taskDefinitionId:$taskDefinitionId, scriptArgs:$scriptArgs) {
-      id
-    }
-  }
-`;
-
 const StopExecutionMutation = gql`
   mutation StopExecutionMutation($taskExecutionId: String!) {
     stopTask(taskExecutionId: $taskExecutionId,) {
@@ -106,15 +97,3 @@ export const RunningTasksWithQuery = graphql(RunningTasksQuery, {options: {pollI
             })
         })
     })(RunningTasks));
-
-export const TaskDefinitionsWithQuery = graphql(TaskDefinitionsQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
-    graphql(StartTaskMutation, {
-        props: ({mutate}) => ({
-            startTaskMutation: (taskDefinitionId: string, scriptArgs: string[]) => mutate({
-                variables: {
-                    taskDefinitionId: taskDefinitionId,
-                    scriptArgs: scriptArgs
-                }
-            })
-        })
-    })(TaskDefinitions));
