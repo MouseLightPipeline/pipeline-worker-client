@@ -73,14 +73,16 @@ class TablePanel extends React.Component<any, any> {
         return (
             <div>
 
-                    <Panel collapsible defaultExpanded header="Task Executions" bsStyle="primary">
-                        {pageCount > 1 ?
-                            <Pagination prev next first last ellipsis boundaryLinks items={pageCount} maxButtons={10}
-                                        activePage={activePage}
-                                        onSelect={(page: any) => {this.props.onUpdateOffset(this.props.executedPageLimit * (page - 1))}}/> : null }
-                        {executedTasks.length === 0 ? <NoTasks/> :
-                            <ExecutedTasksTable executedTasks={executedTasks}/> }
-                    </Panel>
+                <Panel collapsible defaultExpanded header="Task Executions" bsStyle="primary">
+                    {pageCount > 1 ?
+                        <Pagination prev next first last ellipsis boundaryLinks items={pageCount} maxButtons={10}
+                                    activePage={activePage}
+                                    onSelect={(page: any) => {
+                                        this.props.onUpdateOffset(this.props.executedPageLimit * (page - 1))
+                                    }}/> : null}
+                    {executedTasks.length === 0 ? <NoTasks/> :
+                        <ExecutedTasksTable executedTasks={executedTasks}/>}
+                </Panel>
             </div>
         );
     }
@@ -114,7 +116,8 @@ const ExecutedConnectionsQuery = gql`query($executedPageFirst: Int, $executedPag
           id
           name
         }
-        work_units
+        local_work_units
+        cluster_work_units
         resolved_script
         resolved_interpreter
         resolved_script_args
@@ -147,7 +150,8 @@ const ExecutedPageQuery = gql`query($requestedOffset: Int, $executedPageLimit: I
         name
       }
       tile_id
-      work_units
+      local_work_units
+      cluster_work_units
       resolved_script
       resolved_interpreter
       resolved_script_args

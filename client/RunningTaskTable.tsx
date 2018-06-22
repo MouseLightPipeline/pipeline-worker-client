@@ -36,7 +36,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
                 <td>{elapsedText}</td>
                 <td>{taskName}</td>
                 <td>{runningTask.tile_id} </td>
-                <td>{runningTask.work_units} </td>
+                <td>{runningTask.local_work_units} </td>
                 <td>{formatCpuUsage(runningTask.max_cpu)}</td>
                 <td>{formatMemoryFromMB(runningTask.max_memory)}</td>
             </tr>);

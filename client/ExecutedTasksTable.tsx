@@ -139,7 +139,7 @@ class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
                 <td style={style}>{durationText}</td>
                 <td style={style}
                     className="text-right">{`${formatCpuUsage(executedTask.max_cpu)} | ${formatMemoryFromMB(executedTask.max_memory)}`}</td>
-                <td style={style} className="text-center">{formatValue(executedTask.work_units, 0)}</td>
+                <td style={style} className="text-center">{formatValue(executedTask.local_work_units, 0)}</td>
                 <td style={style}>{(new Date(executedTask.completed_at)).toLocaleString()}</td>
             </tr>);
     }

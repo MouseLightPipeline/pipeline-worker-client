@@ -3,10 +3,11 @@ import {graphql} from "react-apollo";
 import {PageHeader} from "react-bootstrap";
 
 import {
-    RunningTasksWithQuery, TaskStatisticsWithQuery, WorkerQuery
+    TaskStatisticsWithQuery, WorkerQuery
 } from "./GraphQLComponents";
 import {ExecutedTasks} from "./ExecutedTasks";
 import {Loading} from "./Loading";
+import {RunningTasksWithQuery} from "./RunningTasks";
 
 class _Layout extends React.Component<any, any> {
     public render() {

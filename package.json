@@ -1,6 +1,6 @@
 {
   "name": "pipeline-worker-client",
-  "version": "1.1.2",
+  "version": "1.2.1",
   "description": "",
   "keywords": [],
   "author": "Patrick Edson <pedson@leapscientific.com> (http://github.com/pedson)",
@@ -40,7 +40,7 @@
     "gulp-shell": "^0.6.3",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.2.0",
-    "typescript": "2.4.2",
+    "typescript": "2.9.2",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "url-loader": "^0.6.2",
     "webpack": "2.7.0",

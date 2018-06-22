@@ -1,7 +1,6 @@
 import {graphql} from "react-apollo";
 import gql from "graphql-tag";
 
-import {RunningTasks} from "./RunningTasks";
 import {TaskStatistics} from "./TaskStatistics";
 
 export const pollingIntervalSeconds = 10;
@@ -10,8 +9,8 @@ export const WorkerQuery = gql`query {
     worker {
       id
       process_id
-      work_capacity
-      is_cluster_proxy
+      local_work_capacity
+      cluster_work_capacity
     }
 }`;
 
@@ -27,26 +26,6 @@ const TaskDefinitionsQuery = gql`query {
       work_units
       cluster_work_units
       log_prefix
-    }
-}`;
-
-const RunningTasksQuery = gql`query { 
-    runningTasks {
-        id
-        work_units
-        task_definition_id
-        tile_id
-        task {
-            id
-            name
-        }
-        resolved_script
-        resolved_script_args
-        max_cpu
-        max_memory
-        submitted_at
-        started_at
-        last_process_status_code
     }
 }`;
 
@@ -74,26 +53,7 @@ const TaskStatisticsQuery = gql`query {
     }
 }`;
 
-const StopExecutionMutation = gql`
-  mutation StopExecutionMutation($taskExecutionId: String!) {
-    stopTask(taskExecutionId: $taskExecutionId,) {
-      id
-    }
-  }
-`;
-
 export const TaskStatisticsWithQuery = graphql(TaskStatisticsQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
     graphql(TaskDefinitionsQuery, {
         name: 'taskDefinitionsData'
     })(TaskStatistics));
-
-export const RunningTasksWithQuery = graphql(RunningTasksQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
-    graphql(StopExecutionMutation, {
-        props: ({mutate}) => ({
-            stopExecution: (taskExecutionId: string) => mutate({
-                variables: {
-                    taskExecutionId: taskExecutionId,
-                }
-            })
-        })
-    })(RunningTasks));

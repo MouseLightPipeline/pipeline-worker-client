@@ -76,7 +76,7 @@ class TaskStatisticsRow extends React.Component<ITaskStatisticsRowProps, any> {
         return (
             <tr>
                 <td><ResetStatisticsButtonWithMutation taskId={statistic.task_definition_id}/></td>
-                <td>{statistic.task.name}</td>
+                <td>{statistic.task_definition_id}</td>
                 <td className="text-center">
                     <table style={tightTable}>
                         <tbody style={tightTableBody}>
@@ -144,7 +144,7 @@ interface ITaskStatisticsTable {
 
 export class TaskStatisticsTable extends React.Component<ITaskStatisticsTable, any> {
     render() {
-        let rows = this.props.statistics.filter(s => s.task && s.task.id).map(s => (
+        let rows = this.props.statistics.filter(s => s.task_definition_id).map(s => (
             <TaskStatisticsRow key={"tr_" + s.id} statistic={s} definitions={this.props.definitions}/>));
 
         return (

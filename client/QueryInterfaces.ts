@@ -32,6 +32,13 @@ export enum ExecutionStatus {
     Deleted = 9
 }
 
+export interface IWorker {
+    id: string
+    process_id: number;
+    local_work_capacity: number;
+    cluster_work_capacity: number;
+}
+
 export interface ITaskDefinitionInput {
     id: string;
     name?: string;
@@ -57,7 +64,7 @@ export interface ITaskDefinition {
 
 export interface IRunningTask {
     id: string;
-    work_units: number;
+    local_work_units: number;
     task_definition_id: string;
     task: ITaskDefinition;
     tile_id: string;
@@ -77,7 +84,7 @@ export interface ITaskExecution {
     task_definition_id: string;
     task: ITaskDefinition;
     pipeline_stage_id: string;
-    work_units: number;
+    local_work_units: number;
     cluster_work_units: number;
     resolved_script: string;
     resolved_interpreter: string;

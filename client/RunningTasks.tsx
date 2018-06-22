@@ -2,14 +2,33 @@ import * as React from "react";
 import {Panel} from "react-bootstrap"
 
 import {RunningTasksTable} from "./RunningTaskTable";
-import {IRunningTask} from "./QueryInterfaces";
+import {IRunningTask, IWorker} from "./QueryInterfaces";
+import {graphql} from "react-apollo";
+import {pollingIntervalSeconds} from "./GraphQLComponents";
+import gql from "graphql-tag";
 
-export class RunningTasks extends React.Component<any, any> {
-    onCancelTask = (id: string) =>  {
+const NoRunningTasks = () => (
+    <div>
+        There are no running tasks.
+    </div>
+);
+
+export interface IRunningTasksState {
+}
+
+export interface IRunningTasksProps {
+    data?: any;
+    worker: IWorker;
+
+    stopExecution?(taskExecutionId: string);
+}
+
+export class RunningTasks extends React.Component<IRunningTasksProps, IRunningTasksState> {
+    onCancelTask = (id: string) => {
         this.props.stopExecution(id)
-        .then((obj: any) => {
-            console.log(`Stopped ${obj}`);
-        }).catch((error: any) => {
+            .then((obj: any) => {
+                console.log(`Stopped ${obj}`);
+            }).catch((error: any) => {
             console.log("there was an error stopping the task", error);
         });
     };
@@ -30,47 +49,83 @@ export class RunningTasks extends React.Component<any, any> {
 }
 
 class TablePanel extends React.Component<any, any> {
-    render() {
-        let load = "";
-
-        let workUnitCapacity = -1;
-
-        if (this.props.worker) {
-            workUnitCapacity = this.props.worker.work_capacity;
+    private calculateLocalLoad(): string {
+        if (!this.props.worker || this.props.worker.local_work_capacity <= 0) {
+            return "";
         }
 
-        let usage = 0;
+        const usage = this.props.runningTasks.reduce((prev: any, next: IRunningTask) => {
+            return prev + next.local_work_units;
+        }, 0);
 
-        if (workUnitCapacity > 0) {
-            if(this.props.worker.is_cluster_proxy) {
-                usage = this.props.runningTasks.length;
-            } else {
-                usage = this.props.runningTasks.reduce((prev: any, next: IRunningTask) => {
-                    return prev + next.work_units;
-                }, 0);
-            }
+        return `Local Load ${calculateLoad(usage, this.props.worker.local_work_capacity)}`;
+    }
 
-            let usagePercentage = 100 * usage/workUnitCapacity;
-
-            load = ` - Load ${usagePercentage.toFixed(1)}% (${usage.toFixed(1)}/${workUnitCapacity.toFixed(1)})`;
+    private calculateClusterLoad(): string {
+        if (!this.props.worker || this.props.worker.cluster_work_capacity <= 0) {
+            return "";
         }
+
+        return `Cluster Load ${calculateLoad(this.props.runningTasks.length, this.props.worker.cluster_work_capacity)}`;
+    }
+
+    public render() {
+        const load = ` - ${this.calculateLocalLoad()} ${this.calculateClusterLoad()}`;
 
         return (
             <div>
                 <Panel collapsible defaultExpanded header={`Running Tasks${load}`} bsStyle="primary">
-                    {this.props.runningTasks.length === 0 ? <NoRunngTasks/> :
-                        <RunningTasksTable runningTasks={this.props.runningTasks} onCancelTask={this.props.onCancelTask}/> }
+                    {this.props.runningTasks.length === 0 ? <NoRunningTasks/> :
+                        <RunningTasksTable runningTasks={this.props.runningTasks}
+                                           onCancelTask={this.props.onCancelTask}/>}
                 </Panel>
             </div>
         );
     }
 }
 
-class NoRunngTasks extends React.Component<any, any> {
-    render() {
-        return (
-            <div>
-                There are no running tasks.
-            </div>);
+const RunningTasksQuery = gql`query { 
+    runningTasks {
+        id
+        local_work_units
+        cluster_work_units
+        task_definition_id
+        tile_id
+        task {
+            id
+            name
+        }
+        resolved_script
+        resolved_script_args
+        max_cpu
+        max_memory
+        submitted_at
+        started_at
+        last_process_status_code
     }
+}`;
+
+const StopExecutionMutation = gql`
+  mutation StopExecutionMutation($taskExecutionId: String!) {
+    stopTask(taskExecutionId: $taskExecutionId,) {
+      id
+    }
+  }
+`;
+
+export const RunningTasksWithQuery = graphql(RunningTasksQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
+    graphql(StopExecutionMutation, {
+        props: ({mutate}) => ({
+            stopExecution: (taskExecutionId: string) => mutate({
+                variables: {
+                    taskExecutionId: taskExecutionId,
+                }
+            })
+        })
+    })(RunningTasks));
+
+function calculateLoad(amount: number, capacity: number): string {
+    const usagePercentage = 100 * amount / capacity;
+
+    return `${usagePercentage.toFixed(1)}% (${amount.toFixed(1)}/${capacity.toFixed(1)})`;
 }
