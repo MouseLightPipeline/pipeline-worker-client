@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
-npm run devel
+logName=$(date '+%Y-%m-%d_%H-%M-%S');
 
-sleep infinity
+export DEBUG=pipeline*
+
+mkdir -p /var/log/pipeline
+
+node server/pipelineWorkerClientServer.js &> /var/log/pipeline/worker-client-${HOSTNAME}-${logName}.log
