@@ -26,7 +26,7 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
             `pending ${moment.duration(elapsed).humanize()}` :
             `${moment.duration(elapsed).humanize()}`;
 
-        const taskName = runningTask.resolved_script; // runningTask && runningTask.task ? runningTask.task.name : "(unknown)";
+        const taskName = runningTask.resolved_script;
 
         return (
             <tr>
@@ -36,9 +36,10 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
                 <td>{elapsedText}</td>
                 <td>{taskName}</td>
                 <td>{runningTask.tile_id} </td>
-                <td>{runningTask.local_work_units} </td>
+                <td>{runningTask.queue_type == 0 ? runningTask.local_work_units : runningTask.cluster_work_units}</td>
                 <td>{formatCpuUsage(runningTask.max_cpu)}</td>
                 <td>{formatMemoryFromMB(runningTask.max_memory)}</td>
+                <td>{runningTask.queue_type == 0 ? "local" : "cluster"}</td>
             </tr>);
     }
 }
@@ -66,6 +67,7 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
                     <th>Work Units</th>
                     <th>Max CPU</th>
                     <th>Max Memory</th>
+                    <th>Location</th>
                 </tr>
                 </thead>
                 <tbody>

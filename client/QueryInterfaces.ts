@@ -35,18 +35,11 @@ export enum ExecutionStatus {
 export interface IWorker {
     id: string
     process_id: number;
+    display_name: string;
+    local_task_load: number;
     local_work_capacity: number;
+    cluster_task_load: number;
     cluster_work_capacity: number;
-}
-
-export interface ITaskDefinitionInput {
-    id: string;
-    name?: string;
-    description?: string;
-    script?: string;
-    interpreter?: string;
-    args?: string;
-    work_units?: number;
 }
 
 export interface ITaskDefinition {
@@ -64,7 +57,9 @@ export interface ITaskDefinition {
 
 export interface IRunningTask {
     id: string;
+    queue_type: number;
     local_work_units: number;
+    cluster_work_units: number;
     task_definition_id: string;
     task: ITaskDefinition;
     tile_id: string;
@@ -98,23 +93,4 @@ export interface ITaskExecution {
     max_memory: number;
     started_at: number;
     completed_at: number;
-}
-
-export interface ITaskStatistics {
-    id: string;
-    task_definition_id: string;
-    task: ITaskDefinition;
-    num_execute: number;
-    num_complete: number;
-    num_error: number;
-    num_cancel: number;
-    cpu_average: number;
-    cpu_high: number;
-    cpu_low: number;
-    memory_average: number;
-    memory_high: number;
-    memory_low: number;
-    duration_average: number;
-    duration_high: number;
-    duration_low: number;
 }

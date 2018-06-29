@@ -2,9 +2,7 @@ import * as React from "react";
 import {graphql} from "react-apollo";
 import {PageHeader} from "react-bootstrap";
 
-import {
-    TaskStatisticsWithQuery, WorkerQuery
-} from "./GraphQLComponents";
+import {WorkerQuery} from "./GraphQLComponents";
 import {ExecutedTasks} from "./ExecutedTasks";
 import {Loading} from "./Loading";
 import {RunningTasksWithQuery} from "./RunningTasks";
@@ -19,23 +17,16 @@ class _Layout extends React.Component<any, any> {
 
         const worker = this.props.data && !this.props.data.loading ? this.props.data.worker : null;
 
-        let modifier = "";
-
-        if (worker && worker.is_cluster_proxy) {
-            modifier = " (cluster proxy)";
-        }
-
         let divStyle = {
             margin: "20px"
         };
 
         return (
             <div style={divStyle}>
-                <PageHeader>Mouse Light Acquisition Dashboard
-                    <small>Pipeline Worker{modifier}{worker ? ` pid: ${worker.process_id}` : ""}</small>
+                <PageHeader>{worker.display_name}
+                    <small>{worker ? ` PID: ${worker.process_id}` : ""}</small>
                 </PageHeader>
                 <RunningTasksWithQuery worker={worker}/>
-                <TaskStatisticsWithQuery/>
                 <ExecutedTasks/>
             </div>
         );

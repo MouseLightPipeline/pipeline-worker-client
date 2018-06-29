@@ -54,11 +54,7 @@ class TablePanel extends React.Component<any, any> {
             return "";
         }
 
-        const usage = this.props.runningTasks.reduce((prev: any, next: IRunningTask) => {
-            return prev + next.local_work_units;
-        }, 0);
-
-        return `Local Load ${calculateLoad(usage, this.props.worker.local_work_capacity)}`;
+        return `Local Load ${calculateLoad(this.props.worker.local_task_load, this.props.worker.local_work_capacity)}`;
     }
 
     private calculateClusterLoad(): string {
@@ -66,7 +62,7 @@ class TablePanel extends React.Component<any, any> {
             return "";
         }
 
-        return `Cluster Load ${calculateLoad(this.props.runningTasks.length, this.props.worker.cluster_work_capacity)}`;
+        return `Cluster Load ${calculateLoad(this.props.worker.cluster_task_load, this.props.worker.cluster_work_capacity)}`;
     }
 
     public render() {
@@ -89,6 +85,7 @@ const RunningTasksQuery = gql`query {
         id
         local_work_units
         cluster_work_units
+        queue_type
         task_definition_id
         tile_id
         task {
