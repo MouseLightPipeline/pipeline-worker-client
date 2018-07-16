@@ -94,8 +94,9 @@ const RunningTasksQuery = gql`query {
         }
         resolved_script
         resolved_script_args
-        max_cpu
-        max_memory
+        cpu_time_seconds
+        max_cpu_percent
+        max_memory_mb
         submitted_at
         started_at
         last_process_status_code

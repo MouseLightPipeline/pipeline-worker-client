@@ -125,8 +125,9 @@ const ExecutedConnectionsQuery = gql`query($executedPageFirst: Int, $executedPag
         completion_status_code
         execution_status_code
         exit_code
-        max_cpu
-        max_memory
+        cpu_time_seconds
+        max_cpu_percent
+        max_memory_mb
         started_at
         completed_at
       }
