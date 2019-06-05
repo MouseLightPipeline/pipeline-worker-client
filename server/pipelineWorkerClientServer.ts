@@ -16,8 +16,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 import {Configuration} from "./configuration";
-
-console.log(`Preparing http://${Configuration.host}:${Configuration.port}/`);
+import * as os from "os";
 
 const rootPath = path.resolve(path.join(__dirname, "..", "public"));
 
@@ -41,7 +40,7 @@ if (process.env.NODE_ENV !== "production") {
 
 app.listen(Configuration.port, "0.0.0.0", () => {
     if (process.env.NODE_ENV !== "production") {
-        console.log(`Listening at http://localhost:${Configuration.port}/`);
+        console.log(`Listening at http://${os.hostname()}:${Configuration.port}/`);
     }
 });
 
