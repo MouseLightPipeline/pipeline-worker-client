@@ -3,7 +3,7 @@ import {Panel} from "react-bootstrap"
 
 import {RunningTasksTable} from "./RunningTaskTable";
 import {IRunningTask, IWorker} from "./QueryInterfaces";
-import {graphql} from "react-apollo";
+import {graphql, Mutation, Query} from "react-apollo";
 import {pollingIntervalSeconds} from "./GraphQLComponents";
 import gql from "graphql-tag";
 
@@ -19,20 +19,9 @@ export interface IRunningTasksState {
 export interface IRunningTasksProps {
     data?: any;
     worker: IWorker;
-
-    stopExecution?(taskExecutionId: string);
 }
 
 export class RunningTasks extends React.Component<IRunningTasksProps, IRunningTasksState> {
-    onCancelTask = (id: string) => {
-        this.props.stopExecution(id)
-            .then((obj: any) => {
-                console.log(`Stopped ${obj}`);
-            }).catch((error: any) => {
-            console.log("there was an error stopping the task", error);
-        });
-    };
-
     render() {
         let runningTasks = [];
 
@@ -42,7 +31,7 @@ export class RunningTasks extends React.Component<IRunningTasksProps, IRunningTa
 
         return (
             <div>
-                <TablePanel runningTasks={runningTasks} worker={this.props.worker} onCancelTask={this.onCancelTask}/>
+                <TablePanel runningTasks={runningTasks} worker={this.props.worker}/>
             </div>
         );
     }
@@ -71,16 +60,23 @@ class TablePanel extends React.Component<any, any> {
         return (
             <div>
                 <Panel collapsible defaultExpanded header={`Running Tasks${load}`} bsStyle="primary">
-                    {this.props.runningTasks.length === 0 ? <NoRunningTasks/> :
-                        <RunningTasksTable runningTasks={this.props.runningTasks}
-                                           onCancelTask={this.props.onCancelTask}/>}
+
+                    <Query query={RunningTasksQuery} pollInterval={pollingIntervalSeconds * 1000}>
+                        {({loading, error, data}) => {
+                            if (!loading && !error && data.runningTasks.length > 0) {
+                                return <RunningTasksTable runningTasks={data.runningTasks}/>
+                            }
+
+                            return <NoRunningTasks/>;
+                        }}
+                    </Query>
                 </Panel>
             </div>
         );
     }
 }
 
-const RunningTasksQuery = gql`query { 
+const RunningTasksQuery = gql`query RunningTasksQuery { 
     runningTasks {
         id
         local_work_units
@@ -102,25 +98,6 @@ const RunningTasksQuery = gql`query {
         last_process_status_code
     }
 }`;
-
-const StopExecutionMutation = gql`
-  mutation StopExecutionMutation($taskExecutionId: String!) {
-    stopTask(taskExecutionId: $taskExecutionId,) {
-      id
-    }
-  }
-`;
-
-export const RunningTasksWithQuery = graphql(RunningTasksQuery, {options: {pollInterval: pollingIntervalSeconds * 1000}})(
-    graphql(StopExecutionMutation, {
-        props: ({mutate}) => ({
-            stopExecution: (taskExecutionId: string) => mutate({
-                variables: {
-                    taskExecutionId: taskExecutionId,
-                }
-            })
-        })
-    })(RunningTasks));
 
 function calculateLoad(amount: number, capacity: number): string {
     const usagePercentage = 100 * amount / capacity;

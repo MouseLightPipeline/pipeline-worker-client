@@ -1,99 +1,35 @@
 import * as React from "react";
 import {Table, Button, Glyphicon, ButtonToolbar} from "react-bootstrap"
 import gql from "graphql-tag";
-import {graphql} from "react-apollo";
+import {Mutation} from "react-apollo";
 import * as moment from "moment";
 
 import {ITaskExecution, ExecutionStatusCode, CompletionStatusCode, ExecutionStatus} from "./QueryInterfaces";
 import {formatCpuUsage, formatMemoryFromMB, formatValue, formatDurationFromHours} from "./util/formatters";
 
+const REMOVE_COMPLETED_MUTATION = gql` 
+    mutation removeCompletedExecutionsWithCode($code: Int) {
+        removeCompletedExecutionsWithCode(code: $code)
+}`;
+
+type RemovedCompletedVariables = {
+    code: number;
+}
+
+type RemovedCompletedData = {
+    count: number
+}
+
+type RemovedCompletedMutationResponse = {
+    removeCompletedExecutionsWithCode: RemovedCompletedData;
+}
+
+class RemovedCompletedMutation extends Mutation<RemovedCompletedMutationResponse, RemovedCompletedVariables> {
+}
+
 interface IExecutedTaskRowProps {
     executedTask: ITaskExecution;
 }
-
-const ClearCompletedExecutionsMutation = gql`
-  mutation removeCompletedExecutionsWithCode($code: Int) {
-    removeCompletedExecutionsWithCode(code: $code)
-  }
-`;
-
-class RemoveCompleteSuccessButton extends React.Component<any, any> {
-    onClick = () => {
-        this.props.removeSuccessMutation(CompletionStatusCode.Success)
-        .then((count: any) => {
-            console.log(`Deleted ${count} items`);
-        }).catch((error: any) => {
-            console.log("there was an error clearing completed executions", error);
-        });
-    };
-
-    render() {
-        return (<Button bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>&nbsp;
-            Clear Success</Button>)
-    }
-}
-
-const RemoveCompleteSuccessButtonWithQuery = graphql(ClearCompletedExecutionsMutation, {
-    props: ({mutate}) => ({
-        removeSuccessMutation: (code: number) => mutate({
-            variables: {
-                code: code
-            }
-        })
-    })
-})(RemoveCompleteSuccessButton);
-
-class RemoveCompleteCanceledButton extends React.Component<any, any> {
-    onClick = () => {
-        this.props.removeSuccessMutation(CompletionStatusCode.Cancel)
-            .then((count: any) => {
-                console.log(`Deleted ${count} items`);
-            }).catch((error: any) => {
-            console.log("there was an error clearing canceled executions", error);
-        });
-    };
-
-    render() {
-        return (<Button bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>&nbsp;
-            Clear Canceled</Button>)
-    }
-}
-
-const RemoveCompleteCanceledButtonWithQuery = graphql(ClearCompletedExecutionsMutation, {
-    props: ({mutate}) => ({
-        removeSuccessMutation: (code: number) => mutate({
-            variables: {
-                code: code
-            }
-        })
-    })
-})(RemoveCompleteCanceledButton);
-
-class RemoveCompleteErrorButton extends React.Component<any, any> {
-    onClick = () => {
-        this.props.removeErrorMutation(CompletionStatusCode.Error)
-        .then((count: any) => {
-            console.log(`Deleted ${count} items`);
-        }).catch((error: any) => {
-            console.log("there was an error clearing errored executions", error);
-        });
-    };
-
-    render() {
-        return (<Button bsSize="sm" onClick={this.onClick}><Glyphicon glyph="trash"/>&nbsp;
-            Clear Errors</Button>)
-    }
-}
-
-const RemoveCompleteErrorButtonWithQuery = graphql(ClearCompletedExecutionsMutation, {
-    props: ({mutate}) => ({
-        removeErrorMutation: (code: number) => mutate({
-            variables: {
-                code: code
-            }
-        })
-    })
-})(RemoveCompleteErrorButton);
 
 class ExecutedTaskRow extends React.Component<IExecutedTaskRowProps, any> {
     render() {
@@ -152,15 +88,48 @@ interface IExecutedTasksTable {
 export class ExecutedTasksTable extends React.Component<IExecutedTasksTable, any> {
     render() {
         let rows = this.props.executedTasks.map(executedTask => {
-               return (<ExecutedTaskRow key={"tr_" + executedTask.id} executedTask={executedTask}/>);
+            return (<ExecutedTaskRow key={"tr_" + executedTask.id} executedTask={executedTask}/>);
         });
 
         return (
             <div>
                 <ButtonToolbar>
-                    <RemoveCompleteSuccessButtonWithQuery/>
-                    <RemoveCompleteCanceledButtonWithQuery/>
-                    <RemoveCompleteErrorButtonWithQuery/>
+                    <RemovedCompletedMutation mutation={REMOVE_COMPLETED_MUTATION}
+                                              refetchQueries={["ExecutedPageQuery"]}
+                                              onError={(error) => {
+                                                  console.log("there was an error clearing completed executions", error);
+                                              }}>
+                        {(removeCompletedExecutionsWithCode) => (
+                            <Button bsSize="sm"
+                                    onClick={() => removeCompletedExecutionsWithCode({variables: {code: CompletionStatusCode.Success}})}>
+                                <Glyphicon glyph="trash"/>&nbsp; Clear Success
+                            </Button>
+                        )}
+                    </RemovedCompletedMutation>
+                    <RemovedCompletedMutation mutation={REMOVE_COMPLETED_MUTATION}
+                                              refetchQueries={["ExecutedPageQuery"]}
+                                              onError={(error) => {
+                                                  console.log("there was an error clearing canceled executions", error);
+                                              }}>
+                        {(removeCompletedExecutionsWithCode) => (
+                            <Button bsSize="sm"
+                                    onClick={() => removeCompletedExecutionsWithCode({variables: {code: CompletionStatusCode.Cancel}})}>
+                                <Glyphicon glyph="trash"/>&nbsp; Clear Canceled
+                            </Button>
+                        )}
+                    </RemovedCompletedMutation>
+                    <RemovedCompletedMutation mutation={REMOVE_COMPLETED_MUTATION}
+                                              refetchQueries={["ExecutedPageQuery"]}
+                                              onError={(error) => {
+                                                  console.log("there was an error clearing failed executions", error);
+                                              }}>
+                        {(removeCompletedExecutionsWithCode) => (
+                            <Button bsSize="sm"
+                                    onClick={() => removeCompletedExecutionsWithCode({variables: {code: CompletionStatusCode.Error}})}>
+                                <Glyphicon glyph="trash"/>&nbsp; Clear Failed
+                            </Button>
+                        )}
+                    </RemovedCompletedMutation>
                 </ButtonToolbar>
 
                 <Table striped condensed>

@@ -1,10 +1,7 @@
 import * as path from "path";
 
-import webpack = require("webpack");
-import * as UglifyJSPlugin from "uglifyjs-webpack-plugin";
-
 const src = path.join(__dirname, "client");
-const dist = path.join(__dirname, "public");
+const dist = path.join(__dirname, "dist",  "public");
 
 module.exports = {
     context: src,
@@ -18,6 +15,8 @@ module.exports = {
         path: dist
     },
 
+    mode: "production",
+
     module: {
         rules: [
             {
@@ -27,7 +26,6 @@ module.exports = {
             },
             {test: /\.css$/, use: "style-loader"},
             {test: /\.css$/, use: "css-loader"},
-            {test: /\.(graphql|gql)$/, exclude: /node_modules/, loader: "graphql-tag/loader"},
             {
                 test: /\.jpe?g$|\.gif$|\.png$|\.ttf$|\.eot$|\.svg$/,
                 use: "file-loader?name=[name].[ext]?[hash]",
@@ -42,15 +40,5 @@ module.exports = {
     resolve: {
         extensions: [".tsx", ".ts", ".js"]
     },
-    devtool: "source-map",
-    plugins: [
-        new UglifyJSPlugin({
-            sourceMap: true
-        }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        })
-    ]
+    devtool: "source-map"
 };

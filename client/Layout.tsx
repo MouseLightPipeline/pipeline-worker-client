@@ -5,7 +5,7 @@ import {Alert, PageHeader} from "react-bootstrap";
 import {WorkerQuery} from "./GraphQLComponents";
 import {ExecutedTasks} from "./ExecutedTasks";
 import {Loading} from "./Loading";
-import {RunningTasksWithQuery} from "./RunningTasks";
+import {RunningTasks} from "./RunningTasks";
 
 class _Layout extends React.Component<any, any> {
     public constructor(props: any) {
@@ -45,7 +45,7 @@ class _Layout extends React.Component<any, any> {
                 <PageHeader>{worker.display_name}
                     <small>{worker ? ` PID: ${worker.process_id}` : ""}</small>
                 </PageHeader>
-                <RunningTasksWithQuery worker={worker}/>
+                <RunningTasks worker={worker}/>
                 <ExecutedTasks/>
             </div>
         );

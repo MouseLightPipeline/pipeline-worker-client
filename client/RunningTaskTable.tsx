@@ -4,17 +4,14 @@ import moment = require("moment");
 
 import {ExecutionStatus, IRunningTask} from "./QueryInterfaces";
 import {formatMemoryFromMB, formatCpuUsage} from "./util/formatters";
+import gql from "graphql-tag";
+import {Mutation} from "react-apollo";
 
 interface IIRunningTaskRowProps {
     runningTask: IRunningTask;
-    onCancelTask(id: string): void;
 }
 
 class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
-    onCancelClick = () => {
-        this.props.onCancelTask(this.props.runningTask.id);
-    };
-
     render() {
         const runningTask = this.props.runningTask;
 
@@ -30,8 +27,20 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
         return (
             <tr>
-                <td><Button bsSize="xs" bsStyle="danger" onClick={this.onCancelClick}><Glyphicon
-                    glyph="stop"/> Cancel</Button></td>
+                <td>
+                    <StopExecutionMutation mutation={STOP_EXECUTION_MUTATION}
+                                           refetchQueries={["RunningTasksQuery"]}
+                                           onError={(error) => {
+                                               console.log("there was an error stopping the task", error);
+                                           }}>
+                        {(removeCompletedExecutionsWithCode) => (
+                            <Button bsSize="xs" bsStyle="danger"
+                                    onClick={() => removeCompletedExecutionsWithCode({variables: {taskExecutionId: runningTask.id}})}>
+                                <Glyphicon glyph="stop"/>Cancel
+                            </Button>
+                        )}
+                    </StopExecutionMutation>
+                </td>
                 <td>{new Date(parseInt(runningTask.started_at)).toLocaleString()}</td>
                 <td>{elapsedText}</td>
                 <td>{taskName}</td>
@@ -46,14 +55,12 @@ class RunningTaskRow extends React.Component<IIRunningTaskRowProps, any> {
 
 interface IRunningTasksTable {
     runningTasks: IRunningTask[];
-    onCancelTask(id: string): void;
 }
 
 export class RunningTasksTable extends React.Component<IRunningTasksTable, any> {
     render() {
         let rows = this.props.runningTasks.map(runningTask => (
-            <RunningTaskRow key={"tr_r" + runningTask.id} runningTask={runningTask}
-                            onCancelTask={this.props.onCancelTask}/>));
+            <RunningTaskRow key={"tr_r" + runningTask.id} runningTask={runningTask}/>));
 
         return (
             <Table striped condensed>
@@ -76,4 +83,27 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
             </Table>
         );
     }
+}
+
+const STOP_EXECUTION_MUTATION = gql`
+  mutation StopExecutionMutation($taskExecutionId: String!) {
+    stopTask(taskExecutionId: $taskExecutionId,) {
+      id
+    }
+  }
+`;
+
+type StopExecutionVariables = {
+    taskExecutionId: string;
+}
+
+type StopExecutionCompletedData = {
+    id: string;
+}
+
+type StopExecutionMutationResponse = {
+    stopTask: StopExecutionCompletedData;
+}
+
+class StopExecutionMutation extends Mutation<StopExecutionMutationResponse, StopExecutionVariables> {
 }
