@@ -6,4 +6,4 @@ export DEBUG=pipeline*
 
 mkdir -p /var/log/pipeline
 
-node server/pipelineWorkerClientServer.js &> /var/log/pipeline/worker-client-${HOSTNAME}-${logName}.log
+node pipelineWorkerClientServer.js &> /var/log/pipeline/worker-client-${HOSTNAME}-${logName}.log

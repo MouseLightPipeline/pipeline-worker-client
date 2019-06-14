@@ -2,18 +2,16 @@ FROM node:8.16
 
 WORKDIR /app
 
-ENV NODE_ENV=production
+COPY dist .
 
-ADD ./package.json .
+RUN yarn --production install
 
-ADD ./yarn.lock .
+RUN groupadd -g 1097 mousebrainmicro
+RUN adduser -u 7700649 --disabled-password --gecos '' mluser
+RUN usermod -a -G mousebrainmicro mluser
 
-RUN yarn install
+USER mluser
 
-ADD ./public/*.* ./public/
-
-ADD ./server/*.js ./server/
-
-CMD ["node", "server/pipelineWorkerClientServer.js"]
+CMD ["./docker-entry.sh"]
 
 EXPOSE  3600

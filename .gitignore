@@ -25,6 +25,5 @@ build/Release
 .DS_Store
 
 # Temporary directories
-tmp
+dist
 
-options.sh
