@@ -87,7 +87,7 @@ export class RunningTasksTable extends React.Component<IRunningTasksTable, any> 
 
 const STOP_EXECUTION_MUTATION = gql`
   mutation StopExecutionMutation($taskExecutionId: String!) {
-    stopTask(taskExecutionId: $taskExecutionId,) {
+    stopTask(taskExecutionId: $taskExecutionId) {
       id
     }
   }
